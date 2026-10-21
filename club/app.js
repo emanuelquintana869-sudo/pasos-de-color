@@ -173,27 +173,29 @@ function renderRank() {
     $('moreBtn').classList.add('hidden');
     return;
   }
-  const rankOf = new Map(state.teams.map((t, i) => [t.code, i + 1]));
+  const rankOf = new Map(state.teams.filter((t) => !t.demo).map((t, i) => [t.code, i + 1]));
+  const hasDemo = list.some((t) => t.demo);
   $('rankList').innerHTML = list.slice(0, state.shown).map((t) => {
     const pos = rankOf.get(t.code);
     const pct = Math.max(4, Math.round((t.supporters / max) * 100));
     const mine = state.me?.code === t.code;
-    return `<article class="team-row ${pos <= 3 ? `top${pos}` : ''}" style="${mine ? 'outline:3px solid var(--mint);outline-offset:2px' : ''}">
-      <span class="pos" aria-label="Puesto ${pos}">${pos}</span>
+    return `<article class="team-row ${!t.demo && pos <= 3 ? `top${pos}` : ''} ${t.demo ? 'demo' : ''}" style="${mine ? 'outline:3px solid var(--mint);outline-offset:2px' : ''}">
+      <span class="pos" ${t.demo ? 'aria-hidden="true"' : `aria-label="Puesto ${pos}"`}>${t.demo ? '·' : pos}</span>
       ${badge(t)}
       <div class="team-info">
-        <strong>${esc(t.name)}${t.won ? '<span class="won-tag">YA GANÓ</span>' : ''}</strong>
+        <strong>${esc(t.name)}${t.won ? '<span class="won-tag">YA GANÓ</span>' : ''}${t.demo ? '<span class="demo-tag">CLUB DE EJEMPLO</span>' : ''}</strong>
         <span class="where">${esc([t.sport, where(t)].filter(Boolean).join(' · '))}</span>
         <div class="bar" aria-hidden="true"><i style="width:${pct}%;background:repeating-linear-gradient(90deg, ${t.color1} 0 14px, ${t.color2} 14px 22px)"></i></div>
         ${t.story ? `<button type="button" class="story-btn" data-story="${t.code}" aria-expanded="false">Leer su historia</button>` : ''}
       </div>
       <div class="team-side">
         <span class="count">${t.supporters} ${t.supporters === 1 ? 'hincha' : 'hinchas'}</span>
-        <button type="button" class="cta" data-apoyar="${t.code}">${mine ? 'Compartir' : 'Apoyar'}</button>
+        ${t.demo ? '<span class="demo-note">No participa</span>' : `<button type="button" class="cta" data-apoyar="${t.code}">${mine ? 'Compartir' : 'Apoyar'}</button>`}
       </div>
       ${t.story ? `<p class="team-story hidden" id="story-${t.code}">“${esc(t.story)}”</p>` : ''}
     </article>`;
   }).join('');
+  if (hasDemo) $('rankList').insertAdjacentHTML('beforeend', '<p class="demo-explain">Los clubes marcados como <strong>ejemplo</strong> muestran cómo se va a ver la página: no son clubes reales, no suman apoyos y no participan en las rondas.</p>');
   $('moreBtn').classList.toggle('hidden', list.length <= state.shown);
 }
 $('q').addEventListener('input', () => { state.shown = 10; renderRank(); });
@@ -215,10 +217,11 @@ function renderStories() {
     track.innerHTML = `<div class="empty-box" style="flex:1 1 100%"><h3>Acá van a aparecer sus historias</h3><p>Cada club que se postula cuenta por qué se merece medias nuevas. ¿Cuál es la historia del tuyo?</p><button type="button" class="cta" data-postular>Contar la de mi club</button></div>`;
     return;
   }
-  track.innerHTML = withStory.slice(0, 12).map((t) => `<article class="story-card" style="${teamVars(t)}">
+  track.innerHTML = [...withStory.filter((t) => !t.demo), ...withStory.filter((t) => t.demo)].slice(0, 12).map((t) => `<article class="story-card" style="${teamVars(t)}">
+    ${t.demo ? '<span class="demo-tag" style="align-self:flex-start;margin:0">HISTORIA DE EJEMPLO</span>' : ''}
     <blockquote>${esc(t.story)}</blockquote>
     <div class="story-who">${badge(t)}<div><strong>${esc(t.name)}</strong><span>${esc(where(t))}</span></div></div>
-    <button type="button" class="cta" data-apoyar="${t.code}" style="align-self:flex-start">Apoyar a este club</button>
+    ${t.demo ? '' : `<button type="button" class="cta" data-apoyar="${t.code}" style="align-self:flex-start">Apoyar a este club</button>`}
   </article>`).join('');
 }
 
@@ -242,7 +245,7 @@ function renderMap() {
     return `<div class="prov"><h3>${esc(prov)} <small>${total} ${total === 1 ? 'club' : 'clubes'}</small></h3>
       ${[...cities.entries()].sort((a, b) => b[1].length - a[1].length).map(([city, teams]) => `<div class="city">
         <div class="city-name"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0119 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>${esc(city)}</div>
-        <div class="city-dots">${teams.map((t) => `<button type="button" class="dot-club" data-apoyar="${t.code}" style="${teamVars(t)}" title="${esc(where(t))}"><i aria-hidden="true"></i>${esc(t.barrio || t.name)}</button>`).join('')}</div>
+        <div class="city-dots">${teams.map((t) => `<button type="button" class="dot-club ${t.demo ? 'demo' : ''}" data-apoyar="${t.code}" style="${teamVars(t)}" title="${esc(t.name)}${t.demo ? ' (club de ejemplo)' : ''}"><i aria-hidden="true"></i>${esc(t.barrio || t.name)}${t.demo ? ' · ejemplo' : ''}</button>`).join('')}</div>
       </div>`).join('')}
     </div>`;
   }).join('');
@@ -491,9 +494,9 @@ function setShare(prefix, t, verb) {
 function supStep(n) { ['s0', 's1', 's2'].forEach((id, i) => $(id).classList.toggle('hidden', i !== n)); }
 function renderPicker() {
   const q = norm($('sq').value.trim());
-  const list = state.teams.filter((t) => !q || norm(`${t.name} ${t.barrio} ${t.city}`).includes(q)).slice(0, 30);
+  const list = state.teams.filter((t) => !t.demo && (!q || norm(`${t.name} ${t.barrio} ${t.city}`).includes(q))).slice(0, 30);
   $('pickList').innerHTML = list.length ? list.map((t) => `<button type="button" class="pick-item" data-pick="${t.code}">${badge(t)}<span><strong>${esc(t.name)}</strong><small>${esc(where(t))} · ${t.supporters} ${t.supporters === 1 ? 'hincha' : 'hinchas'}</small></span></button>`).join('')
-    : '<p class="lead">No hay clubes con ese nombre todavía.</p>';
+    : '<p class="lead">No hay clubes reales con ese nombre todavía. Si es el tuyo, postulalo.</p>';
 }
 $('sq').addEventListener('input', renderPicker);
 $('pickList').addEventListener('click', (e) => { const b = e.target.closest('[data-pick]'); if (b) selectTeam(b.dataset.pick); });
@@ -501,6 +504,7 @@ $('supBack').addEventListener('click', () => { supStep(0); renderPicker(); });
 
 async function openApoyar(code) {
   if (state.me?.code && code && state.me.code === code) { openMe(); return; }
+  if (code && state.teams.find((t) => t.code === code)?.demo) { toast('Es un club de ejemplo: muestra cómo se va a ver la página. ¡Postulá al tuyo!', 5000); return; }
   openSheet('supSheet');
   renderFollows('follow1');
   if (code) await selectTeam(code);
@@ -668,7 +672,8 @@ function startRoll(then) {
     setPhase('roll');
     state.rollStarted = Date.now();
     clearInterval(state.rollTimer);
-    const names = state.teams.length ? state.teams.map((t) => t.name) : ['…'];
+    const real = state.teams.filter((t) => !t.demo);
+    const names = real.length ? real.map((t) => t.name) : ['…'];
     let i = Math.floor(Math.random() * names.length);
     state.rollTimer = setInterval(() => { i = (i + 1 + Math.floor(Math.random() * 3)) % names.length; $('liveRollText').textContent = names[i]; }, 110);
   }

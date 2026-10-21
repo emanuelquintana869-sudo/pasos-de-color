@@ -456,3 +456,11 @@ input { font-family: inherit; }
 .me-btn { white-space: nowrap; }
 .slide-copy { flex: 1.5 1 520px; }
 .slide-inner { padding-bottom: 112px; }
+
+/* Clubes de ejemplo */
+.demo-tag { display: inline-block; background: #FFE9A8; color: #6B4E00; font-family: var(--body); font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 999px; margin-left: 6px; vertical-align: middle; letter-spacing: .04em; border: 1px dashed #B38A00; }
+.team-row.demo { background: #F7F4FC; }
+.team-row.demo .pos { color: #B9AED6; }
+.demo-note { font-size: 13px; font-weight: 700; color: var(--muted); border: 1.5px dashed #B9AED6; border-radius: 999px; padding: 8px 12px; white-space: nowrap; }
+.demo-explain { margin: 8px 0 0; color: var(--soft); font-size: 14px; text-align: center; }
+.dot-club.demo { background: #F7F4FC; border: 1.5px dashed #B9AED6; color: var(--muted); }

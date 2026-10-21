@@ -206,3 +206,10 @@ revoke execute on function public.club_register_participant(text, text, text, te
 revoke execute on function public.club_participant_status(text) from public, anon, authenticated;
 revoke execute on function public.club_admin_list_participants(text) from public, anon, authenticated;
 revoke execute on function public.club_team_json(public.club_teams) from public, anon, authenticated;
+
+-- ---------- v2.1: clubes de ejemplo ----------
+-- club_teams.is_demo / demo_supporters: clubes inventados que se muestran con la etiqueta
+-- "Club de ejemplo". No suman en las estadísticas, no reciben apoyos y nunca pueden ganar.
+-- Panel: club_admin_set_demos_visible(pass, visible) los oculta/muestra a todos juntos.
+-- Ver la consulta aplicada en Supabase (club_team_json, club_public_teams, club_public_stats,
+-- club_support_team, club_admin_pick_winner, club_admin_list_teams_v2).

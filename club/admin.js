@@ -163,11 +163,17 @@ $('notifyForm').addEventListener('submit', (e) => {
 // ---------- Clubes ----------
 let teams = [];
 async function loadParticipants() {
-  try { teams = await rpc('club_admin_list_teams'); } catch (err) { toast(err.message); return; }
-  $('sPart').textContent = teams.filter((t) => t.visible).length;
-  $('sRef').textContent = teams.reduce((n, t) => n + Number(t.supporters), 0);
+  try { teams = await rpc('club_admin_list_teams_v2'); } catch (err) { toast(err.message); return; }
+  const real = teams.filter((t) => !t.is_demo);
+  const demos = teams.filter((t) => t.is_demo);
+  $('sPart').textContent = real.filter((t) => t.visible).length;
+  $('sRef').textContent = real.reduce((n, t) => n + Number(t.supporters), 0);
+  const demosOn = demos.some((t) => t.visible);
+  $('demoBtn').textContent = demosOn ? `Ocultar los ${demos.length} clubes de ejemplo` : `Mostrar los ${demos.length} clubes de ejemplo`;
+  $('demoBtn').dataset.on = demosOn ? '0' : '1';
+  $('demoBtn').classList.toggle('hidden', !demos.length);
   $('pBody').innerHTML = teams.map((t) => `<tr style="${t.visible ? '' : 'opacity:.5'}">
-    <td><span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:${esc(t.color1)};border:3px solid ${esc(t.color2)};box-shadow:0 0 0 1px #0003;vertical-align:middle"></span> <strong>${esc(t.name)}</strong><br><small>${esc(t.code)} · ${esc(t.sport || '')}</small></td>
+    <td><span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:${esc(t.color1)};border:3px solid ${esc(t.color2)};box-shadow:0 0 0 1px #0003;vertical-align:middle"></span> <strong>${esc(t.name)}</strong>${t.is_demo ? ' <small style="background:#FFE9A8;padding:2px 6px;border-radius:6px;font-weight:800">EJEMPLO</small>' : ''}<br><small>${esc(t.code)} · ${esc(t.sport || '')}</small></td>
     <td>${esc([t.barrio, t.city].filter(Boolean).join(', '))}<br><small>${esc(t.province)}</small></td>
     <td><strong>${t.supporters}</strong></td>
     <td>${esc(t.rep_name)}${t.rep_role ? `<br><small>${esc(t.rep_role)}</small>` : ''}</td>
@@ -185,6 +191,11 @@ $('pBody').addEventListener('click', async (e) => {
   catch (err) { toast(err.message); }
 });
 $('reloadP').addEventListener('click', loadParticipants);
+$('demoBtn').addEventListener('click', async () => {
+  const on = $('demoBtn').dataset.on === '1';
+  try { const n = await rpc('club_admin_set_demos_visible', { p_visible: on }); toast(on ? `${n} clubes de ejemplo visibles` : `${n} clubes de ejemplo ocultos`); loadParticipants(); }
+  catch (err) { toast(err.message); }
+});
 function downloadCsv(rows, cols, name) {
   const q = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
   const out = [cols.join(';'), ...rows.map((r) => cols.map((c) => q(r[c])).join(';'))];
