@@ -476,3 +476,13 @@ input { font-family: inherit; }
 .client-note { margin: 0; font-size: 13px; color: var(--muted); }
 .client-count { color: #8A6A00; }
 .team-side .chances { font-size: 12px; font-weight: 800; color: var(--violet-2); background: #EFE8FF; padding: 3px 8px; border-radius: 999px; }
+
+.order-row { display: flex; gap: 8px; }
+.order-row input { flex: 1 1 auto; min-width: 0; }
+.order-check { flex: 0 0 auto; min-height: 50px; padding: 0 16px; border-radius: 14px; border: 0; background: var(--violet-2); color: #fff; font-weight: 800; font-size: 15px; cursor: pointer; }
+.order-check:disabled { opacity: .55; cursor: wait; }
+.order-st { margin: -4px 0 8px; font-weight: 800; font-size: 15px; min-height: 0; }
+.order-st:empty { display: none; }
+.order-st.ok { color: #0E7A43; }
+.order-st.bad { color: #C0264B; }
+.order-st.wait { color: var(--muted); }

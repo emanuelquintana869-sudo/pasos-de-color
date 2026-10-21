@@ -405,7 +405,8 @@
       <div class="client-box" id="rClientBox">
         <label class="client-toggle"><input type="checkbox" id="rIsClient"> <span><strong>¿Sos cliente de Good is Good?</strong><small>Poné tu número de pedido y tu apoyo al club vale <b>x3</b>.</small></span></label>
         <div id="rClientFields" class="hidden">
-          <div class="field"><label for="rOrder">Número de pedido</label><input id="rOrder" type="text" inputmode="numeric" maxlength="40" autocomplete="off" placeholder="Ej: 12"></div>
+          <div class="field"><label for="rOrder">Número de pedido</label><div class="order-row"><input id="rOrder" type="text" inputmode="numeric" maxlength="40" autocomplete="off" placeholder="Ej: 12"><button type="button" class="order-check" data-check="rOrder">Verificar</button></div></div>
+          <p class="order-st" id="rOrderSt" aria-live="polite"></p>
           <p class="client-note">Usamos el número de pedido solo para confirmar que sos cliente. Cada pedido se puede usar una sola vez.</p>
         </div>
       </div>
@@ -461,7 +462,8 @@
       <div class="client-box" id="clientBox">
         <label class="client-toggle"><input type="checkbox" id="isClient"> <span><strong>Soy cliente de Good is Good</strong><small>Con tu número de pedido, tu apoyo vale <b>x3</b> para el club.</small></span></label>
         <div id="clientFields" class="hidden">
-          <div class="field"><label for="fOrder">Número de pedido</label><input id="fOrder" type="text" inputmode="numeric" maxlength="40" autocomplete="off" placeholder="Ej: 12"></div>
+          <div class="field"><label for="fOrder">Número de pedido</label><div class="order-row"><input id="fOrder" type="text" inputmode="numeric" maxlength="40" autocomplete="off" placeholder="Ej: 12"><button type="button" class="order-check" data-check="fOrder">Verificar</button></div></div>
+          <p class="order-st" id="fOrderSt" aria-live="polite"></p>
           <p class="client-note">Usamos el número de pedido solo para confirmar que sos cliente. Cada pedido se puede usar una sola vez.</p>
         </div>
       </div>

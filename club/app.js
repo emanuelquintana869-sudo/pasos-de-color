@@ -428,12 +428,42 @@ $('tStory').addEventListener('input', () => { $('storyCount').textContent = $('t
 $('p2').addEventListener('submit', (e) => { e.preventDefault(); postStep(3); validateP3(); $('rName').focus(); });
 $$('[data-back]').forEach((b) => b.addEventListener('click', () => postStep(Number(b.dataset.back))));
 
+
+// ---------------- Verificar pedido en el momento ----------------
+const orderOk = {};
+const orderMsgs = {
+  ok: '✓ ¡Sos cliente! Tu apoyo vale x3.',
+  invalid: '✗ No encontramos ese número de pedido. Revisalo en tu comprobante.',
+  used: '✗ Ese número de pedido ya se usó.',
+  limit: '✗ Hubo demasiados intentos. Probá de nuevo en una hora.',
+  error: '✗ No pudimos verificar ahora. Intentá de nuevo.',
+};
+function orderVerified(id) { const v = $(id).value.trim(); return !!v && orderOk[id] === v; }
+async function checkOrder(id, after) {
+  const v = $(id).value.trim();
+  const st = $(`${id}St`);
+  if (!v) { st.textContent = ''; return; }
+  if (orderOk[id] === v) return;
+  const btn = document.querySelector(`[data-check="${id}"]`);
+  btn.disabled = true;
+  st.className = 'order-st wait';
+  st.textContent = 'Verificando…';
+  const { data, error } = await sb.rpc('club_check_order', { p_order: v });
+  btn.disabled = false;
+  if ($(id).value.trim() !== v) return;
+  const status = error ? 'error' : (data?.status || 'error');
+  if (status === 'ok') orderOk[id] = v; else delete orderOk[id];
+  st.className = `order-st ${status === 'ok' ? 'ok' : 'bad'}`;
+  st.textContent = orderMsgs[status] || orderMsgs.error;
+  after();
+}
 function validateP3() {
   let msg = '';
   if ($('rName').value.trim().length < 2) msg = 'Escribí tu nombre';
   else if (!emailOk($('rEmail').value)) msg = 'Poné un email válido';
   else if ($('rPhone').value.trim().length < 6) msg = 'Dejanos un WhatsApp para avisarte si el club gana';
   else if ($('rIsClient').checked && !$('rOrder').value.trim()) msg = 'Escribí tu número de pedido';
+  else if ($('rIsClient').checked && !orderVerified('rOrder')) msg = 'Tocá "Verificar" para confirmar que sos cliente';
   else if (!followsOk()) msg = 'Seguí a las dos marcas para continuar';
   else if (!$('rConsent').checked) msg = 'Confirmá que tenés el aval del club';
   $('p3Send').disabled = !!msg;
@@ -553,6 +583,7 @@ function validateSup() {
   if ($('fName').value.trim().length < 2) msg = 'Escribí tu nombre';
   else if (!emailOk($('fEmail').value)) msg = 'Poné un email válido';
   else if ($('isClient').checked && !$('fOrder').value.trim()) msg = 'Escribí tu número de pedido';
+  else if ($('isClient').checked && !orderVerified('fOrder')) msg = 'Tocá "Verificar" para confirmar que sos cliente';
   else if (!followsOk()) msg = 'Seguí a las dos marcas para continuar';
   else if (!$('fConsent').checked) msg = 'Aceptá para continuar';
   $('supSend').disabled = !!msg;
@@ -567,6 +598,13 @@ $('isClient').addEventListener('change', () => {
   if ($('isClient').checked) $('fOrder').focus();
 });
 $('s1').addEventListener('input', validateSup);
+[['rOrder', () => validateP3()], ['fOrder', () => validateSup()]].forEach(([id, after]) => {
+  document.querySelector(`[data-check="${id}"]`).addEventListener('click', () => checkOrder(id, after));
+  $(id).addEventListener('change', () => checkOrder(id, after));
+  $(id).addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); checkOrder(id, after); } });
+  $(id).addEventListener('input', () => { if (orderOk[id] !== $(id).value.trim()) { $(`${id}St`).textContent = ''; } });
+});
+
 $('s1').addEventListener('change', validateSup);
 $('s1').addEventListener('submit', async (e) => {
   e.preventDefault();
