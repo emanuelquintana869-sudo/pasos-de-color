@@ -1,5 +1,7 @@
 # Pasos de Color · Good is Good × Nikao
 
+**En vivo:** https://pasos-de-color.vercel.app · **Panel:** https://pasos-de-color.vercel.app/admin
+
 Landing para que clientes y seguidores participen y ganen medias de la fábrica **Good is Good**, con rondas en vivo en tiempo real.
 
 ## Qué hace
@@ -48,3 +50,7 @@ Es un sitio estático: no necesita compilación. Se publica tal cual en Vercel.
 3. A la hora de la ronda, tocá **Arrancar en vivo**: a todos se les abre la pantalla con la cuenta regresiva.
 4. Al llegar a 0 se elige el ganador automáticamente (o tocá **Elegir ganador**). Aparece en vivo para todos.
 5. Tocá **Ver contacto** para escribirle al ganador.
+
+## Publicación
+
+El proyecto de Vercel `pasos-de-color` está conectado a este repo: cada push a `main` se publica solo.
