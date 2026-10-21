@@ -282,10 +282,55 @@ function joinRelated(root, rows) {
   }
   return rows;
 }
-function guess(keys, words) {
+function guess(keys, words, rows = []) {
   const n = (k) => k.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  for (const w of words) { const k = keys.find((x) => n(x).split('.').pop().includes(w)); if (k) return k; }
+  const filled = (k) => rows.reduce((c, r) => c + (r[k] != null && String(r[k]).trim() !== '' ? 1 : 0), 0);
+  for (const w of words) {
+    const matches = keys.filter((x) => n(x).split('.').pop().includes(w));
+    if (matches.length) return matches.sort((a, b) => filled(b) - filled(a))[0];
+  }
   return '';
+}
+// ---- Excel: lee la hoja de pedidos y le suma los datos de la hoja de clientes ----
+let xlsxReady = null;
+function loadXlsx() {
+  if (window.XLSX) return Promise.resolve(window.XLSX);
+  xlsxReady ||= new Promise((ok, bad) => {
+    const sc = document.createElement('script');
+    sc.src = 'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';
+    sc.onload = () => ok(window.XLSX);
+    sc.onerror = () => bad(new Error('No se pudo cargar el lector de Excel'));
+    document.head.appendChild(sc);
+  });
+  return xlsxReady;
+}
+const normTxt = (v) => String(v ?? '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+async function readExcel(file) {
+  const XLSX = await loadXlsx();
+  const wb = XLSX.read(await file.arrayBuffer(), { type: 'array' });
+  const sheets = wb.SheetNames.map((name) => ({ name, rows: XLSX.utils.sheet_to_json(wb.Sheets[name], { defval: '', raw: false }) }))
+    .filter((s) => s.rows.length);
+  const hdr = (s) => Object.keys(s.rows[0] || {}).map(normTxt);
+  const isOrders = (s) => hdr(s).some((h) => /pedido|order|venta/.test(h)) && !/detalle|talle/.test(normTxt(s.name));
+  const main = sheets.find((s) => /pedido|venta|order/.test(normTxt(s.name)) && isOrders(s)) || sheets.find(isOrders) || sheets[0];
+  if (!main) return [];
+  let rows = main.rows;
+  // Unir con la hoja de clientes por nombre de cliente
+  const cliSheet = sheets.find((s) => s !== main && /client/.test(normTxt(s.name)));
+  const cliKey = (r) => Object.keys(r).find((k) => /^cliente?s?$|^nombre/.test(normTxt(k)));
+  if (cliSheet && rows[0] && cliKey(rows[0]) && cliKey(cliSheet.rows[0])) {
+    const ck = cliKey(cliSheet.rows[0]);
+    const byName = new Map(cliSheet.rows.map((r) => [normTxt(r[ck]), r]));
+    const mk = cliKey(rows[0]);
+    rows = rows.map((r) => {
+      const c = byName.get(normTxt(r[mk]));
+      if (!c) return r;
+      const extra = {};
+      for (const [k, v] of Object.entries(c)) if (k !== ck) extra[`${cliSheet.name}.${k}`] = v;
+      return { ...r, ...extra };
+    });
+  }
+  return rows;
 }
 const mask = (v, keep = 3) => { const s = String(v ?? ''); return s.length <= keep ? s : s.slice(0, keep) + '•'.repeat(Math.min(6, s.length - keep)); };
 const maskMail = (v) => { const s = String(v ?? ''); const [u, d] = s.split('@'); return d ? `${u.slice(0, 2)}•••@${d}` : (s ? '(no es un mail)' : ''); };
@@ -294,6 +339,11 @@ function buildRows() {
   return orderRows.map((r) => ({ o: r[fo], e: fe ? r[fe] : null, p: fp ? r[fp] : null }))
     .map((x) => ({ o: x.o == null ? '' : String(x.o).trim(), e: x.e ? String(x.e).trim() : null, p: x.p ? String(x.p) : null }))
     .filter((x) => x.o && ((x.e && x.e.includes('@')) || (x.p && x.p.replace(/\D/g, '').length >= 4)));
+}
+function buildRowsAll() {
+  const keys = orderRows.length ? Object.keys(orderRows[0]) : [];
+  const contactKeys = keys.filter((k) => /mail|correo|whatsapp|telefono|teléfono|phone|celular/i.test(k));
+  return orderRows.map((r) => ({ hasContact: contactKeys.some((k) => String(r[k] ?? '').trim()) }));
 }
 function previewOrders() {
   const rows = buildRows();
@@ -309,20 +359,25 @@ $('oFile').addEventListener('change', async () => {
   const f = $('oFile').files[0];
   if (!f) return;
   try {
-    const data = JSON.parse(await f.text());
-    orderRows = findRecords(data).map((r) => flatten(r));
+    if (/\.(xlsx|xls|csv)$/i.test(f.name)) orderRows = await readExcel(f);
+    else orderRows = findRecords(JSON.parse(await f.text())).map((r) => flatten(r));
     if (!orderRows.length) { toast('No encontré una lista de pedidos en ese archivo', 6000); $('oMap').classList.add('hidden'); return; }
     const keys = [...new Set(orderRows.slice(0, 50).flatMap((r) => Object.keys(r)))];
     const opts = (sel) => '<option value="">— ninguno —</option>' + keys.map((k) => `<option ${k === sel ? 'selected' : ''}>${esc(k)}</option>`).join('');
-    $('oOrder').innerHTML = opts(guess(keys, ['number', 'numero', 'nro', 'pedido', 'order', 'num', 'orden', 'venta', 'factura', 'comprobante', 'id', '_clave']));
-    $('oEmail').innerHTML = opts(guess(keys, ['email', 'mail', 'correo']));
-    $('oPhone').innerHTML = opts(guess(keys, ['whatsapp', 'telefono', 'phone', 'celular', 'movil', 'tel', 'cel']));
+    $('oOrder').innerHTML = opts(guess(keys.filter((k) => !k.includes('.')), ['n° pedido', 'pedido', 'number', 'numero', 'nro', 'order', 'num', 'orden', 'venta', 'factura', 'comprobante', 'id', '_clave'], orderRows) || guess(keys, ['pedido', 'number', 'id'], orderRows));
+    $('oEmail').innerHTML = opts(guess(keys, ['email', 'mail', 'correo'], orderRows));
+    $('oPhone').innerHTML = opts(guess(keys, ['whatsapp', 'telefono', 'phone', 'celular', 'movil', 'tel', 'cel'], orderRows));
     $('oFound').textContent = `Encontré ${orderRows.length.toLocaleString('es-AR')} pedidos en "${f.name}". Revisá que los campos estén bien elegidos:`;
     $('oMap').classList.remove('hidden');
     previewOrders();
+    const anyContact = buildRowsAll().some((x) => x.hasContact);
+    if (!anyContact) {
+      $('oMsg').style.color = '#C0134A';
+      $('oMsg').textContent = 'Ningún pedido tiene WhatsApp, teléfono ni mail cargado. Completalos en tu sistema, exportá de nuevo y volvé a subir el archivo.';
+    }
   } catch (err) {
     console.error(err);
-    toast('Ese archivo no es un JSON válido', 6000);
+    toast('No pude leer ese archivo. Probá con el Excel o el .json que genera tu sistema.', 6000);
   }
 });
 ['oOrder', 'oEmail', 'oPhone'].forEach((id) => $(id).addEventListener('change', previewOrders));

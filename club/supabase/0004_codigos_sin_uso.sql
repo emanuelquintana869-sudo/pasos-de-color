@@ -1,0 +1,3 @@
+-- Aplicado en Supabase pero SIN USO (se descartó la opción de código único por pedido):
+-- private.club_orders.code_hash, private.club_norm_code(), club_admin_import_codes(), club_admin_reset_code().
+-- club_support_team_client acepta además un código si code_hash existe; como nunca se cargan códigos, no cambia nada.
