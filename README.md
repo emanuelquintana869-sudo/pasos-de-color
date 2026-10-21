@@ -54,3 +54,11 @@ Es un sitio estático: no necesita compilación. Se publica tal cual en Vercel.
 ## Publicación
 
 El proyecto de Vercel `pasos-de-color` está conectado a este repo: cada push a `main` se publica solo.
+
+## Club Pasos de Color (carpeta `club/`)
+
+Segunda landing, independiente del sitio principal, con formato "club": carrusel, premios de las rondas, beneficios, pared de ganadores y niveles gratuitos (Descalzo → Media corta → Media larga → De colección) que se suben sumando amigos con el link propio.
+
+- Se publica como **otro proyecto de Vercel** (`club-pasos-de-color`) con raíz en `club/`. El sitio principal la ignora (`.vercelignore`).
+- Usa la **misma base de datos** que el sitio principal: los anotados, las rondas, la pantalla en vivo y los avisos son los mismos, y todo se maneja desde el mismo `/admin`.
+- Los niveles salen de las chances: 1 chance base + 1 por cada amigo anotado con tu link.
