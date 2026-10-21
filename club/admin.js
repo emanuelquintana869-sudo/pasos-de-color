@@ -338,7 +338,7 @@ function buildRows() {
   const fo = $('oOrder').value; const fe = $('oEmail').value; const fp = $('oPhone').value;
   return orderRows.map((r) => ({ o: r[fo], e: fe ? r[fe] : null, p: fp ? r[fp] : null }))
     .map((x) => ({ o: x.o == null ? '' : String(x.o).trim(), e: x.e ? String(x.e).trim() : null, p: x.p ? String(x.p) : null }))
-    .filter((x) => x.o && ((x.e && x.e.includes('@')) || (x.p && x.p.replace(/\D/g, '').length >= 4)));
+    .filter((x) => x.o);
 }
 function buildRowsAll() {
   const keys = orderRows.length ? Object.keys(orderRows[0]) : [];
@@ -348,11 +348,11 @@ function buildRowsAll() {
 function previewOrders() {
   const rows = buildRows();
   $('oPreview').innerHTML = rows.slice(0, 5).map((x) => `<tr><td>${esc(mask(x.o))}</td><td>${esc(maskMail(x.e))}</td><td>${x.p ? '••••' + esc(x.p.replace(/\D/g, '').slice(-4)) : ''}</td></tr>`).join('')
-    || '<tr><td colspan="3">Elegí el campo del pedido y al menos el mail o el teléfono.</td></tr>';
+    || '<tr><td colspan="3">Elegí el campo con el número de pedido.</td></tr>';
   const lost = orderRows.length - rows.length;
   $('oUpload').textContent = `Subir ${rows.length.toLocaleString('es-AR')} pedidos`;
   $('oUpload').disabled = !rows.length || !$('oOrder').value;
-  $('oMsg').textContent = lost > 0 ? `${lost} ${lost === 1 ? 'pedido sin mail ni teléfono válido no se va' : 'pedidos sin mail ni teléfono válido no se van'} a subir.` : '';
+  $('oMsg').textContent = lost > 0 ? `${lost} ${lost === 1 ? 'fila sin número de pedido no se va' : 'filas sin número de pedido no se van'} a subir.` : '';
   $('oMsg').style.color = 'var(--muted)';
 }
 $('oFile').addEventListener('change', async () => {
@@ -365,16 +365,12 @@ $('oFile').addEventListener('change', async () => {
     const keys = [...new Set(orderRows.slice(0, 50).flatMap((r) => Object.keys(r)))];
     const opts = (sel) => '<option value="">— ninguno —</option>' + keys.map((k) => `<option ${k === sel ? 'selected' : ''}>${esc(k)}</option>`).join('');
     $('oOrder').innerHTML = opts(guess(keys.filter((k) => !k.includes('.')), ['n° pedido', 'pedido', 'number', 'numero', 'nro', 'order', 'num', 'orden', 'venta', 'factura', 'comprobante', 'id', '_clave'], orderRows) || guess(keys, ['pedido', 'number', 'id'], orderRows));
-    $('oEmail').innerHTML = opts(guess(keys, ['email', 'mail', 'correo'], orderRows));
-    $('oPhone').innerHTML = opts(guess(keys, ['whatsapp', 'telefono', 'phone', 'celular', 'movil', 'tel', 'cel'], orderRows));
+    // Solo número de pedido: no se sube mail ni teléfono
+    $('oEmail').innerHTML = opts('');
+    $('oPhone').innerHTML = opts('');
     $('oFound').textContent = `Encontré ${orderRows.length.toLocaleString('es-AR')} pedidos en "${f.name}". Revisá que los campos estén bien elegidos:`;
     $('oMap').classList.remove('hidden');
     previewOrders();
-    const anyContact = buildRowsAll().some((x) => x.hasContact);
-    if (!anyContact) {
-      $('oMsg').style.color = '#C0134A';
-      $('oMsg').textContent = 'Ningún pedido tiene WhatsApp, teléfono ni mail cargado. Completalos en tu sistema, exportá de nuevo y volvé a subir el archivo.';
-    }
   } catch (err) {
     console.error(err);
     toast('No pude leer ese archivo. Probá con el Excel o el .json que genera tu sistema.', 6000);

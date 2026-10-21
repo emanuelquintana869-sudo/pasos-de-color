@@ -525,8 +525,7 @@ function validateSup() {
   let msg = '';
   if ($('fName').value.trim().length < 2) msg = 'Escribí tu nombre';
   else if (!emailOk($('fEmail').value)) msg = 'Poné un email válido';
-  else if ($('isClient').checked && $('fOrder').value.trim().length < 2) msg = 'Escribí tu número de pedido';
-  else if ($('isClient').checked && !emailOk($('fContact').value) && $('fContact').value.replace(/\D/g, '').length < 4) msg = 'Poné el mail o los últimos 4 números del teléfono de la compra';
+  else if ($('isClient').checked && !$('fOrder').value.trim()) msg = 'Escribí tu número de pedido';
   else if (!followsOk()) msg = 'Seguí a las dos marcas para continuar';
   else if (!$('fConsent').checked) msg = 'Aceptá para continuar';
   $('supSend').disabled = !!msg;
@@ -551,7 +550,7 @@ $('s1').addEventListener('submit', async (e) => {
   const asClient = $('isClient').checked;
   const { data, error } = asClient
     ? await sb.rpc('club_support_team_client', {
-      p_code: state.supTeam.code, p_order: $('fOrder').value.trim(), p_contact: $('fContact').value.trim(),
+      p_code: state.supTeam.code, p_order: $('fOrder').value.trim(), p_contact: '',
       p_name: $('fName').value.trim(), p_email: $('fEmail').value.trim(), p_city: $('fCity').value.trim(), p_channels: { gmail: true },
     })
     : await sb.rpc('club_support_team', {
@@ -560,7 +559,7 @@ $('s1').addEventListener('submit', async (e) => {
     });
   btn.textContent = asClient ? 'Apoyar como cliente' : 'Apoyar al club';
   const clientErr = {
-    invalid: 'No encontramos ese pedido con ese mail o teléfono. Revisá los datos de tu compra.',
+    invalid: 'No encontramos ese número de pedido. Revisalo en tu comprobante.',
     used: 'Ese número de pedido ya se usó para apoyar a un club.',
     limit: 'Hubo demasiados intentos. Probá de nuevo en una hora, o apoyá sin número de pedido.',
     no_team: 'Ese club ya no está disponible.',

@@ -108,7 +108,7 @@
 
     <section class="panel" id="ordersPanel">
       <h2>Pedidos de clientes</h2>
-      <p>Subí el <strong>Excel</strong> (o el .json) que genera tu sistema. Se lee acá, en tu navegador: <strong>solo se sube el número de pedido y el mail o teléfono de cada compra</strong>, y se guardan encriptados. Nombres, montos, direcciones y el resto del archivo no salen de tu compu. Podés subir el archivo completo cada vez: los pedidos repetidos se actualizan y los ya usados siguen usados.</p>
+      <p>Subí el <strong>Excel</strong> (o el .json) que genera tu sistema. Se lee acá, en tu navegador: <strong>solo se sube el número de pedido</strong>, encriptado. Nombres, montos, direcciones y el resto del archivo no salen de tu compu. Podés subir el archivo completo cada vez: los pedidos repetidos se actualizan y los ya usados siguen usados.</p>
       <div class="stats" style="margin-bottom:14px">
         <div class="stat" style="background:#EFE8FF"><b id="oTotal">0</b><span>Pedidos cargados</span></div>
         <div class="stat" style="background:#FFF3B0"><b id="oUsed">0</b><span>Usados por clientes</span></div>
@@ -119,11 +119,11 @@
         <p id="oFound" style="margin:0 0 10px"></p>
         <div class="grid2">
           <div class="field" style="margin:0"><label for="oOrder">Campo con el número de pedido</label><select id="oOrder"></select></div>
-          <div class="field" style="margin:0"><label for="oEmail">Campo con el mail (opcional)</label><select id="oEmail"></select></div>
-          <div class="field" style="margin:0"><label for="oPhone">Campo con el teléfono (opcional)</label><select id="oPhone"></select></div>
+          <div class="field" style="margin:0;display:none"><label for="oEmail">Campo con el mail (no hace falta)</label><select id="oEmail"></select></div>
+          <div class="field" style="margin:0;display:none"><label for="oPhone">Campo con el teléfono (no hace falta)</label><select id="oPhone"></select></div>
         </div>
         <p style="margin:14px 0 6px;font-weight:700;color:var(--ink)">Así se va a subir (vista previa, con datos tapados):</p>
-        <div class="scroll" style="max-height:220px"><table><thead><tr><th>Pedido</th><th>Mail</th><th>Teléfono (últimos 4)</th></tr></thead><tbody id="oPreview"></tbody></table></div>
+        <div class="scroll" style="max-height:220px"><table><thead><tr><th>Pedido</th><th></th><th></th></tr></thead><tbody id="oPreview"></tbody></table></div>
         <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px">
           <button type="button" class="cta" id="oUpload">Subir pedidos</button>
           <span id="oMsg" style="font-weight:700"></span>
