@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Panel · Pasos de Color</title>
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<style>
+  body { background: var(--paper); }
+  .admin { max-width: 1100px; margin: 0 auto; padding: 24px 16px 80px; display: flex; flex-direction: column; gap: 20px; }
+  .panel { background: var(--white); border: 2px solid var(--ink); border-radius: 22px; padding: 22px; box-shadow: 6px 6px 0 var(--ink); }
+  .panel h2 { font-family: var(--display); font-weight: 800; font-size: 26px; margin: 0 0 14px; letter-spacing: -.02em; }
+  .panel p { margin: 0 0 12px; color: var(--muted); }
+  .top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+  .stat { border: 2px solid var(--ink); border-radius: 18px; padding: 16px; }
+  .stat b { display: block; font-family: var(--display); font-size: 40px; line-height: 1; }
+  .stat span { font-size: 14px; font-weight: 700; }
+  .stat:nth-child(1) { background: var(--yellow); } .stat:nth-child(2) { background: var(--pink); } .stat:nth-child(3) { background: var(--mint); }
+  .round { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; border: 2px solid var(--ink); border-radius: 18px; padding: 14px 16px; margin-bottom: 10px; }
+  .round .info { min-width: 220px; flex: 1 1 260px; }
+  .round .info strong { font-size: 18px; }
+  .round .info div { color: var(--muted); font-size: 14px; margin-top: 2px; }
+  .status { display: inline-block; font-size: 12px; font-weight: 800; letter-spacing: .06em; padding: 4px 10px; border-radius: 999px; border: 2px solid var(--ink); margin-left: 6px; vertical-align: middle; }
+  .st-scheduled { background: var(--white); } .st-live { background: var(--pink); } .st-done { background: var(--mint); } .st-cancelled { background: #E5E0D2; }
+  .acts { display: flex; flex-wrap: wrap; gap: 8px; }
+  .acts button, .sm { min-height: 42px; padding: 0 14px; border-radius: 999px; border: 2px solid var(--ink); background: var(--white); font-weight: 700; font-size: 14px; color: var(--ink); }
+  .acts .go { background: var(--pink); } .acts .pick { background: var(--yellow); }
+  .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; align-items: end; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid #E8E1CF; white-space: nowrap; }
+  th { font-size: 12px; letter-spacing: .06em; color: var(--muted); }
+  .scroll { overflow-x: auto; max-height: 460px; overflow-y: auto; border: 2px solid var(--ink); border-radius: 14px; }
+  .field select, .field textarea { border: 2px solid var(--ink); border-radius: 14px; padding: 12px 14px; font-size: 16px; background: var(--paper); font-family: inherit; width: 100%; }
+  .field textarea { min-height: 90px; resize: vertical; }
+  .check { display: inline-flex; gap: 8px; align-items: center; font-weight: 700; font-size: 15px; margin-right: 16px; }
+  .check input { width: 20px; height: 20px; accent-color: var(--blue); }
+  .log { font-size: 14px; background: var(--paper); border: 2px dashed var(--ink); border-radius: 14px; padding: 12px; margin-top: 12px; white-space: pre-wrap; }
+  .contact { background: var(--yellow); border: 2px solid var(--ink); border-radius: 14px; padding: 12px 14px; margin-top: 10px; width: 100%; font-size: 15px; line-height: 1.6; }
+</style>
+</head>
+<body>
+<main class="admin">
+  <div class="top">
+    <a href="/" class="brand" aria-label="Volver al sitio">
+      <span class="brand-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <span><span class="brand-name">PANEL DE RONDAS</span><span class="brand-sub" style="display:block">Pasos de Color · Good is Good × Nikao</span></span>
+    </a>
+    <button type="button" class="sm hidden" id="logout">Salir</button>
+  </div>
+
+  <section class="panel" id="loginPanel">
+    <h2>Entrar al panel</h2>
+    <form id="loginForm" class="grid2">
+      <div class="field"><label for="pass">Contraseña</label><input id="pass" type="password" autocomplete="current-password" required></div>
+      <button class="btn btn-blue" type="submit">Entrar</button>
+    </form>
+    <p class="hint err" id="loginErr" style="text-align:left;margin-top:10px"></p>
+  </section>
+
+  <div id="app" class="hidden" style="display:flex;flex-direction:column;gap:20px">
+    <section class="stats">
+      <div class="stat"><b id="sPart">0</b><span>Participantes</span></div>
+      <div class="stat"><b id="sRef">0</b><span>Llegaron por un amigo</span></div>
+      <div class="stat"><b id="sWin">0</b><span>Ganadores</span></div>
+    </section>
+
+    <section class="panel">
+      <h2>Rondas</h2>
+      <p>Para hacer una ronda: <strong>1)</strong> tocá "Arrancar en vivo" (a todos se les abre la pantalla de colores con la cuenta regresiva) y <strong>2)</strong> al terminar la cuenta se elige el ganador solo, o lo elegís vos con "Elegir ganador".</p>
+      <div class="grid2" style="margin-bottom:14px">
+        <div class="field"><label for="secs">Cuenta regresiva (segundos)</label><input id="secs" type="number" min="5" max="600" value="30"></div>
+        <label class="check" style="min-height:52px"><input type="checkbox" id="autoPick" checked> Elegir ganador solo al llegar a 0</label>
+        <label class="check" style="min-height:52px"><input type="checkbox" id="autoNotify" checked> Mandar push al arrancar</label>
+      </div>
+      <div id="rounds"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Nueva ronda</h2>
+      <form id="roundForm" class="grid2">
+        <div class="field"><label for="rTitle">Nombre</label><input id="rTitle" type="text" placeholder="Ronda 2" required></div>
+        <div class="field"><label for="rDate">Fecha y hora (Argentina)</label><input id="rDate" type="datetime-local" required></div>
+        <div class="field"><label for="rPrize">Premio</label><input id="rPrize" type="text" placeholder="Pack de 3 pares Good is Good × Nikao"></div>
+        <button class="btn btn-yellow" type="submit">Crear ronda</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Mandar un aviso</h2>
+      <p>Llega como notificación push a quienes la activaron y por mail a quienes eligieron Gmail.</p>
+      <form id="notifyForm" style="display:flex;flex-direction:column;gap:12px">
+        <div class="field"><label for="nTitle">Título</label><input id="nTitle" type="text" value="¡Hoy hay ronda en vivo!" required maxlength="80"></div>
+        <div class="field"><label for="nBody">Mensaje</label><textarea id="nBody" maxlength="300" required>A las 20 h elegimos ganadores de medias Good is Good × Nikao. Entrá un ratito antes.</textarea></div>
+        <div><label class="check"><input type="checkbox" id="nPush" checked> Push</label><label class="check"><input type="checkbox" id="nMail" checked> Mail</label></div>
+        <button class="btn btn-ink" type="submit" style="align-self:flex-start">Enviar aviso</button>
+      </form>
+      <div class="log hidden" id="notifyLog"></div>
+    </section>
+
+    <section class="panel">
+      <div class="top" style="margin-bottom:12px"><h2 style="margin:0">Participantes</h2><div class="acts"><button type="button" id="reloadP">Actualizar</button><button type="button" id="csv">Descargar Excel (CSV)</button></div></div>
+      <div class="scroll"><table><thead><tr><th>Fecha</th><th>Nombre</th><th>Email</th><th>Instagram</th><th>Club</th><th>Ciudad</th><th>WhatsApp</th><th>Número</th><th>Chances</th></tr></thead><tbody id="pBody"></tbody></table></div>
+    </section>
+
+    <section class="panel">
+      <h2>Videos</h2>
+      <p>Pegá el link de YouTube (se ve dentro de la página), TikTok o Instagram (se abre aparte).</p>
+      <div id="videosList"></div>
+      <form id="videoForm" class="grid2" style="margin-top:12px">
+        <input type="hidden" id="vId">
+        <div class="field"><label for="vTitle">Título</label><input id="vTitle" required maxlength="90"></div>
+        <div class="field"><label for="vTag">Etiqueta</label><input id="vTag" placeholder="FÁBRICA" maxlength="20"></div>
+        <div class="field"><label for="vUrl">Link</label><input id="vUrl" type="url" placeholder="https://youtube.com/..."></div>
+        <div class="field"><label for="vDur">Duración</label><input id="vDur" placeholder="2:14" maxlength="10"></div>
+        <div class="field"><label for="vColor">Color</label><select id="vColor"><option value="#FF3D8B">Rosa</option><option value="#2B3FE0">Azul</option><option value="#19C99A">Verde</option><option value="#FF8A3D">Naranja</option><option value="#FFD60A">Amarillo</option></select></div>
+        <button class="btn btn-yellow" type="submit" id="vSave">Agregar video</button>
+      </form>
+    </section>
+  </div>
+</main>
+<div class="toast hidden" id="toast" role="status"></div>
+<script type="module" src="/admin.js"></script>
+</body>
+</html>

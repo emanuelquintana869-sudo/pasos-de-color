@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pasos de Color · Good is Good × Nikao</title>
+<meta name="description" content="Sumate, seguí y ganá medias de la fábrica Good is Good. Rondas en vivo todos los viernes. Colaboración Good is Good × Nikao.">
+<meta name="theme-color" content="#FFD60A">
+<meta property="og:title" content="Pasos de Color · Good is Good × Nikao">
+<meta property="og:description" content="Sumate gratis y ganá medias de Good is Good. Rondas en vivo cada viernes.">
+<meta property="og:type" content="website">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>NUEVA RONDA ESTE VIERNES · GOOD IS GOOD × NIKAO · MEDIAS QUE HABLAN POR VOS · SUMATE GRATIS · TE AVISAMOS POR MAIL, PUSH Y CALENDARIO ·</span>
+    <span>NUEVA RONDA ESTE VIERNES · GOOD IS GOOD × NIKAO · MEDIAS QUE HABLAN POR VOS · SUMATE GRATIS · TE AVISAMOS POR MAIL, PUSH Y CALENDARIO ·</span>
+  </div>
+</div>
+
+<div class="live-strip" id="liveStrip" role="status">
+  ¡Hay una ronda EN VIVO ahora! <button type="button" data-open-live>Ver en vivo</button>
+</div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#inicio" class="brand" aria-label="Pasos de Color, inicio">
+      <span class="brand-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <span>
+        <span class="brand-name">PASOS DE COLOR</span>
+        <span class="brand-sub" style="display:block">Good is Good × Nikao</span>
+      </span>
+    </a>
+    <button class="menu-btn" id="menuBtn" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="nav-links" id="navLinks" aria-label="Principal">
+      <a href="#como">Cómo funciona</a>
+      <a href="#ganadores">Ganadores</a>
+      <a href="#videos">Videos</a>
+      <a href="#avisos">Avisos</a>
+      <a href="#participar" class="cta">Quiero participar</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" id="inicio">
+    <div class="blob blob-1" aria-hidden="true"></div>
+    <div class="blob blob-2" aria-hidden="true"></div>
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="pill"><span class="dot"></span> Colaboración oficial Good is Good × Nikao</span>
+        <h1 class="display hero-title">Sumate.<br><span class="hl">Seguí.</span><br>Ganá medias.</h1>
+        <p class="hero-lead">Cada viernes elegimos en vivo a quienes se llevan medias de la fábrica <strong>Good is Good</strong>. Anotarte es gratis, toma un minuto y seguís participando en todas las rondas.</p>
+        <div class="hero-actions">
+          <a href="#participar" class="btn btn-blue btn-lg">
+            Quiero participar
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <button type="button" class="btn btn-lg" data-open-live>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5z"/></svg>
+            Pantalla en vivo
+          </button>
+        </div>
+        <div class="hero-count hidden" id="heroCount"></div>
+      </div>
+
+      <div class="hero-side">
+        <div class="socks" aria-hidden="true">
+          <div class="sock s1"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
+          <div class="sock s2"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
+          <div class="sock s3"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
+          <div class="sock s4"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
+        </div>
+
+        <div class="cd-card" aria-live="off">
+          <div class="cd-head">
+            <span class="cd-kicker" id="cdKicker">PRÓXIMA RONDA EN VIVO</span>
+            <span class="cd-date" id="cdDate">Cargando…</span>
+          </div>
+          <div class="cd-grid" role="timer" aria-label="Tiempo para la próxima ronda">
+            <div class="cd-cell"><b id="cdD">--</b><span>DÍAS</span></div>
+            <div class="cd-cell"><b id="cdH">--</b><span>HORAS</span></div>
+            <div class="cd-cell"><b id="cdM">--</b><span>MIN</span></div>
+            <div class="cd-cell"><b id="cdS">--</b><span>SEG</span></div>
+          </div>
+          <p class="cd-prize" id="cdPrize"></p>
+          <p class="cd-note">Cuando arranque, esta página se abre sola en modo en vivo.</p>
+          <div class="cd-actions">
+            <a id="calLink" href="#" target="_blank" rel="noopener">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+              Agendar en Google Calendar
+            </a>
+            <button type="button" data-push>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0112 0v5l2 2H4z"/><path d="M10 20a2 2 0 004 0"/></svg>
+              Avisarme
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CÓMO FUNCIONA -->
+  <section class="section band bg-blue" id="como">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="display h2">Cuatro pasos<br>y ya estás adentro.</h2>
+        <p>Sin compras, sin vueltas. Quedás anotado para todas las rondas mientras sigas cumpliendo los requisitos.</p>
+      </div>
+      <div class="steps">
+        <div class="step"><b>01</b><h3>Seguí las cuentas</h3><p>Seguí a Good is Good y a Nikao en Instagram, y a Good is Good en TikTok.</p></div>
+        <div class="step"><b>02</b><h3>Anotate acá</h3><p>Completá el formulario con tu nombre, mail y club. Te damos tu número de participación.</p></div>
+        <div class="step"><b>03</b><h3>Activá los avisos</h3><p>Mail, notificación push o calendario: elegí cómo enterarte primero.</p></div>
+        <div class="step"><b>04</b><h3>Mirá y ganá</h3><p>El viernes elegimos ganadores en vivo, en esta misma página.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTICIPAR -->
+  <section class="section" id="participar">
+    <div class="wrap join">
+      <div class="join-left">
+        <span class="tag">REQUISITOS</span>
+        <h2 class="display" style="font-size: clamp(34px, 4.6vw, 56px)">Tildá cada paso<br>a medida que lo hacés</h2>
+        <div class="progress-box">
+          <div class="progress-row"><span>Tu progreso</span><span id="progText">0 de 5</span></div>
+          <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" id="progBar"><i id="progFill"></i></div>
+        </div>
+        <div id="reqList" style="display:flex;flex-direction:column;gap:12px"></div>
+        <div class="extra">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#16131F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:0 0 auto"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg>
+          <div><strong style="font-size:17px">Chances extra</strong><div>Por cada amigo que se anota con tu link sumás una chance más en cada ronda.</div></div>
+        </div>
+      </div>
+
+      <div class="join-right">
+        <div class="card">
+          <form class="form" id="joinForm" novalidate>
+            <h3>Anotate en la ronda</h3>
+            <p>Completá tus datos para que podamos contactarte si ganás.</p>
+            <div class="field">
+              <label for="fName">Nombre y apellido</label>
+              <input id="fName" name="name" type="text" autocomplete="name" placeholder="Ej: Sofía Martínez" required maxlength="80">
+            </div>
+            <div class="field">
+              <label for="fEmail">Email (Gmail o el que uses)</label>
+              <input id="fEmail" name="email" type="email" autocomplete="email" inputmode="email" placeholder="tunombre@gmail.com" required maxlength="120">
+            </div>
+            <div class="row">
+              <div class="field">
+                <label for="fIg">Tu Instagram</label>
+                <input id="fIg" name="instagram" type="text" placeholder="@usuario" maxlength="60" autocapitalize="off">
+              </div>
+              <div class="field">
+                <label for="fClub">¿De qué club sos?</label>
+                <input id="fClub" name="club" type="text" placeholder="Ej: Lanús" maxlength="60">
+              </div>
+            </div>
+            <div class="row">
+              <div class="field">
+                <label for="fCity">Ciudad / Provincia</label>
+                <input id="fCity" name="city" type="text" autocomplete="address-level2" placeholder="Ej: Lanús, Buenos Aires" maxlength="80">
+              </div>
+              <div class="field">
+                <label for="fPhone">WhatsApp (opcional)</label>
+                <input id="fPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="11 1234 5678" maxlength="30">
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <span class="field-label" id="chLabel">¿Cómo querés que te avisemos?</span>
+              <div class="chips" role="group" aria-labelledby="chLabel">
+                <button type="button" class="chip" data-ch="gmail" aria-pressed="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>Gmail
+                </button>
+                <button type="button" class="chip" data-ch="push" aria-pressed="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0112 0v5l2 2H4z"/><path d="M10 20a2 2 0 004 0"/></svg>Push
+                </button>
+                <button type="button" class="chip" data-ch="whatsapp" aria-pressed="false">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.4-4A8 8 0 1112 20a8 8 0 01-4-1z"/></svg>WhatsApp
+                </button>
+                <button type="button" class="chip" data-ch="calendar" aria-pressed="false">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Calendario
+                </button>
+              </div>
+            </div>
+            <label class="consent"><input type="checkbox" id="fConsent" required> Acepto las bases y que me contacten si gano. Soy mayor de 18 años o tengo permiso de un adulto.</label>
+            <button type="submit" class="btn btn-yellow btn-lg" id="submitBtn" disabled>Quiero participar</button>
+            <p class="hint" id="formHint" aria-live="polite"></p>
+          </form>
+
+          <div class="success hidden" id="success" aria-live="polite">
+            <div class="ok-badge"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#16131F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+            <h3 class="display" style="font-size:34px" id="okTitle">¡Ya estás adentro!</h3>
+            <p style="margin:0;font-size:16px;color:var(--muted);max-width:360px" id="okText">Quedaste anotado para la próxima ronda. Te avisamos antes de que arranque.</p>
+            <div class="ticket">
+              <small>TU NÚMERO DE PARTICIPACIÓN</small>
+              <b id="okTicket">GIG-000000</b>
+              <div class="chances" id="okChances">1 chance</div>
+            </div>
+            <div class="share">
+              <strong>Tu link para sumar chances:</strong>
+              <code id="okLink"></code>
+              <div class="share-btns">
+                <a class="wa" id="waShare" href="#" target="_blank" rel="noopener">Compartir por WhatsApp</a>
+                <button type="button" id="copyLink">Copiar link</button>
+                <button type="button" id="nativeShare" class="hidden">Compartir</button>
+              </div>
+            </div>
+            <button type="button" class="link-btn" id="anotherBtn">Anotar a otra persona</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GANADORES -->
+  <section class="section band bg-yellow" id="ganadores">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="display h2">Últimos ganadores<br>y su club</h2>
+        <p>Cada ronda sumamos a quienes se llevaron sus medias. La próxima tarjeta puede ser la tuya.</p>
+      </div>
+      <div class="grid-cards" id="winnersGrid"></div>
+    </div>
+  </section>
+
+  <!-- VIDEOS -->
+  <section class="section bg-ink" id="videos">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="display h2">Adentro<br><span style="color:var(--yellow)">de la fábrica</span></h2>
+        <p>Cómo se tejen, quién las diseña y cómo reaccionan los ganadores cuando les llega el paquete.</p>
+      </div>
+      <div class="grid-cards" id="videosGrid"></div>
+    </div>
+  </section>
+
+  <!-- AVISOS -->
+  <section class="section" id="avisos">
+    <div class="wrap">
+      <div class="alerts">
+        <div class="alerts-copy">
+          <h2 class="display" style="font-size: clamp(34px, 4.6vw, 58px)">Que no se te pase<br>la próxima ronda</h2>
+          <p>Te avisamos antes de que arranque y en el momento en que empieza el vivo. Elegí por dónde.</p>
+        </div>
+        <div class="alerts-grid">
+          <a class="alert-card" href="#participar">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#16131F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+            <strong>Gmail</strong><span>Anotate con tu mail y te llega el recordatorio.</span>
+          </a>
+          <button type="button" class="alert-card" data-push style="font:inherit;text-align:left;cursor:pointer">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#16131F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0112 0v5l2 2H4z"/><path d="M10 20a2 2 0 004 0"/></svg>
+            <strong>Notificación push</strong><span>En el celu o la compu, al instante.</span>
+          </button>
+          <a class="alert-card" id="calLink2" href="#" target="_blank" rel="noopener">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#16131F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+            <strong>Google Calendar</strong><span>Agendá la ronda con alarma.</span>
+          </a>
+          <a class="alert-card" id="igLink" href="#" target="_blank" rel="noopener">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#16131F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+            <strong>Historias de IG</strong><span>Activá la campanita en @goodisgood.</span>
+          </a>
+          <button type="button" class="btn btn-ink btn-lg" data-push id="pushBig">Activar avisos en este dispositivo</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section style="padding: 0 0 88px">
+    <div class="wrap" style="max-width: 860px">
+      <h2 class="display" style="font-size: clamp(32px, 4vw, 48px); margin-bottom: 24px">Preguntas rápidas</h2>
+      <div class="faq">
+        <details open><summary>¿Tengo que comprar algo para participar?</summary><p>No. Participar es totalmente gratis: cumplís los requisitos y completás el formulario.</p></details>
+        <details><summary>¿Cada cuánto hay una ronda nueva?</summary><p>Anunciamos cada ronda en esta página y en nuestras redes. Si ya te anotaste, seguís participando en las siguientes sin volver a anotarte.</p></details>
+        <details><summary>¿Cómo se elige a quien gana?</summary><p>El sistema elige al azar entre todas las personas anotadas, en vivo y a la vista de todos. Cada amigo que se suma con tu link te da una chance más.</p></details>
+        <details><summary>¿Cómo me entero si gané?</summary><p>Lo ves en vivo en esta página con tu número de participación, y además te escribimos al mail y por Instagram. Tenés 72 horas para responder.</p></details>
+        <details><summary>¿Envían a todo el país?</summary><p>Sí, mandamos las medias sin costo a cualquier punto de Argentina.</p></details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-name">PASOS DE COLOR</div>
+        <div style="margin-top:8px;font-weight:700">Una colaboración Good is Good × Nikao</div>
+      </div>
+      <div class="footer-links">
+        <a id="fGig" href="#" target="_blank" rel="noopener">@goodisgood</a>
+        <a id="fNik" href="#" target="_blank" rel="noopener">@nikao</a>
+        <a href="#participar">Participar</a>
+      </div>
+    </div>
+    <small>Participación gratuita. Sin obligación de compra. Instagram y TikTok no patrocinan ni administran esta acción.</small>
+  </div>
+</footer>
+
+<!-- EN VIVO -->
+<div class="live hidden" id="live" role="dialog" aria-modal="true" aria-labelledby="liveTitle">
+  <div class="live-rays" aria-hidden="true"></div>
+  <div class="confetti hidden" id="confetti" aria-hidden="true"></div>
+  <button type="button" class="live-close" id="liveClose" aria-label="Cerrar pantalla en vivo">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <div class="live-inner">
+    <div class="live-badge" id="liveBadge"><span class="dot"></span> <span id="liveBadgeText">EN VIVO AHORA</span></div>
+    <div class="live-title" id="liveTitle">Ronda Good is Good × Nikao</div>
+
+    <div id="liveWait" class="hidden" style="display:flex;flex-direction:column;align-items:center;gap:14px">
+      <p class="live-sub">La próxima ronda arranca en</p>
+      <div class="live-roll" id="liveWaitTime" style="font-size:clamp(40px,8vw,72px)">--:--:--</div>
+      <p class="live-sub">Dejá esta pantalla abierta: se activa sola cuando empieza.</p>
+    </div>
+
+    <div id="liveCount" class="hidden" style="display:flex;flex-direction:column;align-items:center;gap:12px">
+      <p class="live-sub">Elegimos ganador en</p>
+      <div class="live-num" id="liveNum">10</div>
+      <p class="live-sub" id="livePlayers">Todos los anotados están en juego</p>
+    </div>
+
+    <div id="liveRoll" class="hidden" style="display:flex;flex-direction:column;align-items:center;gap:14px;width:100%">
+      <p class="live-sub">Mezclando participantes…</p>
+      <div class="live-roll" id="liveRollText">GIG-000000</div>
+    </div>
+
+    <div id="liveWin" class="hidden" style="display:flex;flex-direction:column;align-items:center;gap:16px;width:100%">
+      <p class="live-big">¡TENEMOS GANADOR!</p>
+      <div class="live-winner">
+        <div class="name" id="winName">—</div>
+        <div class="meta" id="winMeta"></div>
+        <div class="tk" id="winTicket"></div>
+      </div>
+      <div class="live-me hidden" id="winMe">¡Sos vos! Revisá tu mail: te escribimos para coordinar el envío.</div>
+      <p class="live-sub">Si no ganaste, ya quedás anotado para la próxima ronda.</p>
+      <button type="button" class="btn btn-ink" id="liveBack">Volver a la página</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast hidden" id="toast" role="status"></div>
+
+<script type="module" src="/app.js"></script>
+</body>
+</html>
