@@ -233,19 +233,54 @@ function flatten(obj, prefix = '', out = {}) {
   }
   return out;
 }
+// Busca la lista de pedidos dentro del JSON (prioriza "orders"/"pedidos"/"ventas")
+// y, si cada pedido apunta a un cliente (clientId), le suma los datos de ese cliente.
+const ORDER_KEYS = ['orders', 'pedidos', 'ventas', 'sales', 'ordenes', 'compras'];
+const isObjList = (v) => Array.isArray(v) && v.some((x) => x && typeof x === 'object' && !Array.isArray(x));
 function findRecords(data) {
   if (Array.isArray(data)) return data.filter((x) => x && typeof x === 'object');
-  if (data && typeof data === 'object') {
-    for (const v of Object.values(data)) {
-      if (Array.isArray(v) && v.some((x) => x && typeof x === 'object')) return v.filter((x) => x && typeof x === 'object');
-    }
+  if (!data || typeof data !== 'object') return [];
+  const lower = (k) => k.toLowerCase();
+  const key = Object.keys(data).find((k) => ORDER_KEYS.includes(lower(k)) && isObjList(data[k]))
+    || Object.keys(data).filter((k) => isObjList(data[k]))
+      .sort((a, b) => score(data[b]) - score(data[a]))[0];
+  if (!key) {
     for (const v of Object.values(data)) {
       if (v && typeof v === 'object' && !Array.isArray(v)) { const r = findRecords(v); if (r.length) return r; }
     }
-    const vals = Object.entries(data);
-    if (vals.length && vals.every(([, v]) => v && typeof v === 'object' && !Array.isArray(v))) return vals.map(([k, v]) => ({ _clave: k, ...v }));
+    return [];
   }
-  return [];
+  return joinRelated(data, data[key].filter((x) => x && typeof x === 'object'));
+}
+// Puntaje: listas con campos de pedido (número, cliente, total, fecha) ganan; usuarios/contraseñas pierden
+function score(list) {
+  const k = Object.keys(list.find((x) => x && typeof x === 'object') || {}).map((x) => x.toLowerCase());
+  let s = 0;
+  if (k.some((x) => /number|numero|nro|pedido|order/.test(x))) s += 3;
+  if (k.some((x) => /client|cliente|customer/.test(x))) s += 2;
+  if (k.some((x) => /total|monto|amount/.test(x))) s += 1;
+  if (k.some((x) => /password|contrase/.test(x))) s -= 10;
+  return s;
+}
+// clientId → busca en "clients"/"clientes" y agrega sus campos como "cliente.xxx"
+function joinRelated(root, rows) {
+  const sample = rows[0] || {};
+  for (const fk of Object.keys(sample)) {
+    const m = fk.match(/^(.*?)_?id$/i);
+    if (!m || !m[1]) continue;
+    const base = m[1].toLowerCase();
+    const listKey = Object.keys(root).find((k) => isObjList(root[k]) && [base + 's', base + 'es', base].includes(k.toLowerCase()));
+    if (!listKey) continue;
+    const byId = new Map(root[listKey].map((x) => [String(x.id), x]));
+    rows = rows.map((r) => {
+      const rel = byId.get(String(r[fk]));
+      if (!rel) return r;
+      const extra = {};
+      for (const [k, v] of Object.entries(rel)) if (v == null || typeof v !== 'object') extra[`${base}.${k}`] = v;
+      return { ...r, ...extra };
+    });
+  }
+  return rows;
 }
 function guess(keys, words) {
   const n = (k) => k.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -279,9 +314,9 @@ $('oFile').addEventListener('change', async () => {
     if (!orderRows.length) { toast('No encontré una lista de pedidos en ese archivo', 6000); $('oMap').classList.add('hidden'); return; }
     const keys = [...new Set(orderRows.slice(0, 50).flatMap((r) => Object.keys(r)))];
     const opts = (sel) => '<option value="">— ninguno —</option>' + keys.map((k) => `<option ${k === sel ? 'selected' : ''}>${esc(k)}</option>`).join('');
-    $('oOrder').innerHTML = opts(guess(keys, ['pedido', 'order', 'nro', 'numero', 'num', 'orden', 'venta', 'factura', 'comprobante', 'id', '_clave']));
+    $('oOrder').innerHTML = opts(guess(keys, ['number', 'numero', 'nro', 'pedido', 'order', 'num', 'orden', 'venta', 'factura', 'comprobante', 'id', '_clave']));
     $('oEmail').innerHTML = opts(guess(keys, ['email', 'mail', 'correo']));
-    $('oPhone').innerHTML = opts(guess(keys, ['telefono', 'tel', 'phone', 'celular', 'cel', 'whatsapp', 'movil']));
+    $('oPhone').innerHTML = opts(guess(keys, ['whatsapp', 'telefono', 'phone', 'celular', 'movil', 'tel', 'cel']));
     $('oFound').textContent = `Encontré ${orderRows.length.toLocaleString('es-AR')} pedidos en "${f.name}". Revisá que los campos estén bien elegidos:`;
     $('oMap').classList.remove('hidden');
     previewOrders();
