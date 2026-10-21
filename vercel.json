@@ -36,17 +36,5 @@
         }
       ]
     }
-  ],
-  "redirects": [
-    {
-      "source": "/club",
-      "destination": "https://club-pasos-de-color.vercel.app/",
-      "permanent": false
-    },
-    {
-      "source": "/club/:path*",
-      "destination": "https://club-pasos-de-color.vercel.app/",
-      "permanent": false
-    }
   ]
 }

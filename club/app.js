@@ -182,7 +182,7 @@ $('lvGrid').addEventListener('click', (e) => { if (e.target.closest('[data-share
 
 // ---------------- Rondas ----------------
 async function loadRounds() {
-  const { data, error } = await sb.from('rounds').select('*').neq('status', 'cancelled').order('scheduled_at', { ascending: true });
+  const { data, error } = await sb.from('club_rounds').select('*').neq('status', 'cancelled').order('scheduled_at', { ascending: true });
   if (error) { console.error(error); return; }
   state.rounds = data || [];
   pickNext();
@@ -417,14 +417,14 @@ $('step2').addEventListener('submit', async (e) => {
   btn.disabled = true;
   btn.textContent = 'Sumándote…';
   const name = $('fName').value.trim();
-  const { data, error } = await sb.rpc('register_participant', {
+  const { data, error } = await sb.rpc('club_register_participant', {
     p_name: name,
     p_email: $('fEmail').value.trim(),
     p_instagram: $('fIg2').value.trim().replace(/^@?/, '@').replace(/^@$/, ''),
     p_club: $('fClub').value.trim(),
     p_city: $('fCity').value.trim(),
     p_phone: $('fPhone').value.trim(),
-    p_channels: { ...channels, origen: 'club' },
+    p_channels: { ...channels },
     p_ref: LS.get('pdc_ref', null),
   });
   btn.textContent = '¡Sumarme al club!';
@@ -476,8 +476,8 @@ $('meBtn').addEventListener('click', () => (state.me ? openJoin(true) : openMe()
 $('meForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const t = $('meTicket').value.trim().toUpperCase();
-  if (!/^GIG-[0-9A-F]{6}$/.test(t)) { $('meHint').textContent = 'El número tiene este formato: GIG-1A2B3C'; $('meHint').classList.add('err'); return; }
-  const { data } = await sb.rpc('participant_status', { p_ticket: t });
+  if (!/^PDC-[0-9A-F]{6}$/.test(t)) { $('meHint').textContent = 'El número tiene este formato: PDC-1A2B3C'; $('meHint').classList.add('err'); return; }
+  const { data } = await sb.rpc('club_participant_status', { p_ticket: t });
   if (!data) { $('meHint').textContent = 'No encontramos ese número.'; $('meHint').classList.add('err'); return; }
   state.me = data;
   LS.set('pdc_ticket', data.ticket);
@@ -491,14 +491,14 @@ function refreshMeBtn() { $('meBtn').textContent = state.me ? state.me.ticket : 
 async function restoreMe() {
   const t = LS.get('pdc_ticket', null);
   if (!t) { renderLevels(); return; }
-  const { data } = await sb.rpc('participant_status', { p_ticket: t });
+  const { data } = await sb.rpc('club_participant_status', { p_ticket: t });
   if (data) state.me = data; else LS.del('pdc_ticket');
   renderLevels();
   refreshMeBtn();
 }
 
 async function loadStats() {
-  const { data } = await sb.rpc('public_stats');
+  const { data } = await sb.rpc('club_public_stats');
   const n = data?.participants || 0;
   $('livePlayers').textContent = n ? `${n.toLocaleString('es-AR')} participantes en juego` : 'Todos los anotados están en juego';
 }
@@ -531,7 +531,7 @@ async function subscribePush(silent = false) {
     let sub = await reg.pushManager.getSubscription();
     if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToUint8(CONFIG.vapidPublicKey) });
     const j = sub.toJSON();
-    const { error } = await sb.rpc('save_push_subscription', { p_endpoint: j.endpoint, p_p256dh: j.keys.p256dh, p_auth: j.keys.auth, p_ticket: state.me?.ticket || null });
+    const { error } = await sb.rpc('club_save_push_subscription', { p_endpoint: j.endpoint, p_p256dh: j.keys.p256dh, p_auth: j.keys.auth, p_ticket: state.me?.ticket || null });
     if (error) throw error;
     $('pushBtn').textContent = 'Avisos activados';
     if (!silent) toast('¡Listo! Te avisamos cuando arranque la ronda');
@@ -580,7 +580,7 @@ $$('[data-open-live]').forEach((b) => b.addEventListener('click', () => {
 $('liveClose').addEventListener('click', closeLive);
 $('liveBack').addEventListener('click', closeLive);
 
-const randomTicket = () => 'GIG-' + Math.floor(Math.random() * 0xffffff).toString(16).toUpperCase().padStart(6, '0');
+const randomTicket = () => 'PDC-' + Math.floor(Math.random() * 0xffffff).toString(16).toUpperCase().padStart(6, '0');
 function startRoll(then) {
   if (state.phase !== 'roll') {
     setPhase('roll');
@@ -643,7 +643,7 @@ function onRoundChange(payload) {
   }
   renderWinners();
 }
-sb.channel('club-rondas').on('postgres_changes', { event: '*', schema: 'public', table: 'rounds' }, onRoundChange).subscribe();
+sb.channel('club-rondas').on('postgres_changes', { event: '*', schema: 'public', table: 'club_rounds' }, onRoundChange).subscribe();
 document.addEventListener('visibilitychange', () => { if (!document.hidden) loadRounds(); });
 setInterval(loadRounds, 60000);
 
