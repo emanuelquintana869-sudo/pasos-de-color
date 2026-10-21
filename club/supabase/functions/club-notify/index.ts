@@ -26,7 +26,7 @@ function emailHtml(title: string, body: string, link: string) {
       <p style="margin:0 0 24px;font-size:16px;line-height:1.5;color:#3A3547">${esc(body)}</p>
       <a href="${link}" style="display:inline-block;background:#2EE6B0;color:#170A33;text-decoration:none;font-weight:700;font-size:17px;padding:16px 28px;border-radius:999px;border:2px solid #16131F">Entrar a la ronda</a>
     </td></tr>
-    <tr><td style="padding:16px 28px 24px;font-size:12px;color:#4A4558">Recibís este mail porque te sumaste al Club Pasos de Color y elegiste avisos por Gmail.</td></tr>
+    <tr><td style="padding:16px 28px 24px;font-size:12px;color:#4A4558">Recibís este mail porque postulaste o apoyás a un club en Club Pasos de Color.</td></tr>
   </table></td></tr></table></body></html>`;
 }
 
@@ -84,8 +84,12 @@ Deno.serve(async (req) => {
       result.email = { skipped: 'falta configurar la clave de Resend (RESEND_API_KEY) para mandar mails' };
     } else {
       const from = Deno.env.get('RESEND_FROM') || conf.club_resend_from || conf.resend_from || 'Club Pasos de Color <onboarding@resend.dev>';
-      const { data: people } = await sb.from('club_participants').select('email, channels').eq('active', true);
-      const to = (people ?? []).filter((p) => p.channels?.gmail !== false).map((p) => p.email as string);
+      const { data: reps } = await sb.from('club_teams').select('rep_email, channels').eq('visible', true);
+      const { data: fans } = await sb.from('club_supporters').select('email, channels');
+      const to = [...new Set([
+        ...(reps ?? []).filter((p) => p.channels?.gmail !== false).map((p) => (p.rep_email as string).toLowerCase()),
+        ...(fans ?? []).filter((p) => p.channels?.gmail !== false).map((p) => (p.email as string).toLowerCase()),
+      ])];
       const html = emailHtml(title, body, `${origin}${path}`);
       let sent = 0, failed = 0;
       for (let i = 0; i < to.length; i += 100) {

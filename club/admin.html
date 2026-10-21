@@ -67,14 +67,14 @@
 
   <div id="app" class="hidden" style="display:flex;flex-direction:column;gap:20px">
     <section class="stats">
-      <div class="stat"><b id="sPart">0</b><span>Miembros del club</span></div>
-      <div class="stat"><b id="sRef">0</b><span>Llegaron por un amigo</span></div>
-      <div class="stat"><b id="sWin">0</b><span>Ganadores</span></div>
+      <div class="stat"><b id="sPart">0</b><span>Clubes postulados</span></div>
+      <div class="stat"><b id="sRef">0</b><span>Hinchas sumados</span></div>
+      <div class="stat"><b id="sWin">0</b><span>Clubes ganadores</span></div>
     </section>
 
     <section class="panel">
       <h2>Rondas del Club</h2>
-      <p><strong>1)</strong> Tocá "Arrancar en vivo": a todos los que tengan el Club abierto se les abre la pantalla con la cuenta regresiva. <strong>2)</strong> Al llegar a 0 se elige el ganador solo, o lo elegís vos con "Elegir ganador".</p>
+      <p><strong>1)</strong> Tocá "Arrancar en vivo": a todos los que tengan el Club abierto se les abre la pantalla con la cuenta regresiva. <strong>2)</strong> Al llegar a 0 se elige el club ganador solo (cada hincha es una chance), o lo elegís vos con "Elegir ganador". En el premio escribí qué se lleva el club.</p>
       <div class="grid2" style="margin-bottom:14px">
         <div class="field" style="margin:0"><label for="secs">Cuenta regresiva (segundos)</label><input id="secs" type="number" min="5" max="600" value="30"></div>
         <label class="check" style="min-height:50px"><input type="checkbox" id="autoPick" checked> Elegir ganador solo al llegar a 0</label>
@@ -88,17 +88,17 @@
       <form id="roundForm" class="grid2">
         <div class="field" style="margin:0"><label for="rTitle">Nombre</label><input id="rTitle" type="text" placeholder="Ronda 1" required></div>
         <div class="field" style="margin:0"><label for="rDate">Fecha y hora (Argentina)</label><input id="rDate" type="datetime-local" required></div>
-        <div class="field" style="margin:0"><label for="rPrize">Premio</label><input id="rPrize" type="text" placeholder="Pack de 3 pares Good is Good × Nikao"></div>
+        <div class="field" style="margin:0"><label for="rPrize">Premio</label><input id="rPrize" type="text" placeholder="Ej: Juego de medias para todo el plantel con los colores del club"></div>
         <button class="cta" type="submit">Crear ronda</button>
       </form>
     </section>
 
     <section class="panel">
       <h2>Mandar un aviso</h2>
-      <p>Llega como notificación a quienes la activaron en el Club y por mail a quienes eligieron mail.</p>
+      <p>Llega como notificación a quienes la activaron y por mail a quienes postularon o apoyan un club.</p>
       <form id="notifyForm" style="display:flex;flex-direction:column;gap:4px">
         <div class="field"><label for="nTitle">Título</label><input id="nTitle" type="text" value="¡Hoy hay ronda en el Club!" required maxlength="80"></div>
-        <div class="field"><label for="nBody">Mensaje</label><textarea id="nBody" maxlength="300" required>Esta noche elegimos ganadores de medias Good is Good × Nikao en vivo. Entrá un ratito antes.</textarea></div>
+        <div class="field"><label for="nBody">Mensaje</label><textarea id="nBody" maxlength="300" required>Esta noche elegimos en vivo al club de barrio que se lleva medias nuevas con sus colores. Entrá un ratito antes.</textarea></div>
         <div style="margin-bottom:10px"><label class="check"><input type="checkbox" id="nPush" checked> Notificación</label><label class="check"><input type="checkbox" id="nMail" checked> Mail</label></div>
         <button class="cta" type="submit" style="align-self:flex-start">Enviar aviso</button>
       </form>
@@ -106,8 +106,9 @@
     </section>
 
     <section class="panel">
-      <div class="top" style="margin-bottom:12px"><h2 style="margin:0">Miembros</h2><div class="acts"><button type="button" id="reloadP">Actualizar</button><button type="button" id="csv">Descargar Excel (CSV)</button></div></div>
-      <div class="scroll"><table><thead><tr><th>Fecha</th><th>Nombre</th><th>Email</th><th>Instagram</th><th>Club</th><th>Ciudad</th><th>WhatsApp</th><th>Número</th><th>Chances</th></tr></thead><tbody id="pBody"></tbody></table></div>
+      <div class="top" style="margin-bottom:12px"><h2 style="margin:0">Clubes postulados</h2><div class="acts"><button type="button" id="reloadP">Actualizar</button><button type="button" id="csv">Excel de clubes</button><button type="button" id="csvFans">Excel de hinchas</button></div></div>
+      <p>Si un club carga datos falsos o una historia que no corresponde, ocultalo: deja de verse y no entra en las rondas.</p>
+      <div class="scroll"><table><thead><tr><th>Club</th><th>Dónde</th><th>Hinchas</th><th>Postuló</th><th>Contacto</th><th>Historia</th><th></th></tr></thead><tbody id="pBody"></tbody></table></div>
     </section>
   </div>
 </main>

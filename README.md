@@ -61,10 +61,10 @@ El proyecto de Vercel `pasos-de-color` publica la carpeta `sitio-principal/` y `
 
 ## Club Pasos de Color (carpeta `club/`)
 
-Segunda landing, **totalmente independiente** del sitio principal, con formato "club": carrusel, premios de las rondas, beneficios, pared de ganadores y niveles gratuitos (Descalzo → Media corta → Media larga → De colección) que se suben sumando amigos con el link propio.
+Landing **totalmente independiente** del sitio principal, para que **clubes de barrio** ganen **medias personalizadas** con sus colores.
 
-- **Link propio:** proyecto de Vercel `club-pasos-de-color` con raíz en `club/` → https://club-pasos-de-color.vercel.app (panel en `/admin`).
-- **Datos propios:** tablas `club_participants`, `club_rounds`, `club_push_subscriptions` y funciones `club_*` (ver `club/supabase/0001_club.sql`). No comparte anotados, rondas, ganadores, avisos ni contraseña con el sitio principal.
-- **Números propios:** empiezan con `PDC-` (el sitio principal usa `GIG-`).
-- **Avisos propios:** función `club-notify` con claves push propias (`club_vapid_*` en `private.config`).
-- Los niveles salen de las chances: 1 chance base + 1 por cada amigo anotado con tu link.
+- **Cómo funciona:** alguien del club (dirigente, jugador, profe, socio) lo postula con sus colores y su historia. Los hinchas lo apoyan desde el link del club (`/?c=CLB-XXXXX`). En cada ronda en vivo se elige un club al azar: cada hincha es una chance para su club.
+- **Secciones:** carrusel, manifiesto y números reales, cómo funciona, premio de la próxima ronda, ranking de clubes (con buscador y filtro por provincia), historias de los clubes, mapa de barrios, avisos, clubes ganadores, preguntas.
+- **Panel** `/admin` (contraseña propia): rondas con premio libre, en vivo, contacto del club ganador, avisos, lista de clubes (ocultar/mostrar) y Excel de clubes e hinchas.
+- **Link propio:** proyecto de Vercel `club-pasos-de-color` con raíz en `club/` → https://club-pasos-de-color.vercel.app
+- **Datos propios:** tablas `club_teams`, `club_supporters`, `club_rounds`, `club_push_subscriptions` y funciones `club_*` (ver `club/supabase/`). Avisos con la función `club-notify` y claves push propias. No comparte nada con el sitio principal.

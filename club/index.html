@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Club Pasos de Color · Good is Good × Nikao</title>
-<meta name="description" content="Sumate gratis al Club Pasos de Color: rondas en vivo cada semana para ganar medias Good is Good × Nikao. Sumá amigos, subí de nivel y multiplicá tus chances.">
+<title>Club Pasos de Color · Medias para clubes de barrio</title>
+<meta name="description" content="Good is Good × Nikao regalan medias personalizadas con los colores de los clubes de barrio. Postulá a tu club, sumá a tu gente y mirá la ronda en vivo.">
 <meta name="theme-color" content="#170A33">
-<meta property="og:title" content="Club Pasos de Color · Good is Good × Nikao">
-<meta property="og:description" content="Sumate gratis, subí de nivel y ganá medias en las rondas en vivo.">
+<meta property="og:title" content="Club Pasos de Color · Medias para clubes de barrio">
+<meta property="og:description" content="Postulá a tu club de barrio y ganá medias personalizadas con sus colores. Cada hincha que se suma es una chance más.">
 <meta property="og:type" content="website">
 <link rel="icon" href="/icon.svg" type="image/svg+xml">
 <link rel="manifest" href="/manifest.webmanifest">
@@ -24,19 +24,20 @@
   <div class="nav-inner">
     <a href="#inicio" class="logo" aria-label="Club Pasos de Color, inicio">
       <span class="logo-badge" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-      <span class="logo-text"><b>Club Pasos de Color</b><span>Good is Good × Nikao</span></span>
+      <span class="logo-text"><b>Club Pasos de Color</b><span>Medias para clubes de barrio</span></span>
     </a>
     <nav class="menu" id="menu" aria-label="Principal">
       <a href="#inicio" class="on">Inicio</a>
-      <a href="#premios">Premios</a>
+      <a href="#como">Cómo funciona</a>
+      <a href="#ranking">Ranking</a>
+      <a href="#historias">Historias</a>
+      <a href="#mapa">Mapa</a>
       <a href="#ganadores">Ganadores</a>
-      <a href="#club">Beneficios</a>
-      <a href="#niveles">Niveles</a>
       <a href="#preguntas">Preguntas</a>
     </nav>
     <div class="nav-right">
-      <button type="button" class="me-btn" id="meBtn">Mi número</button>
-      <button type="button" class="cta" data-join>¡Sumarme!</button>
+      <button type="button" class="me-btn" id="meBtn">Mi club</button>
+      <button type="button" class="cta" data-postular><span class="lg-only">Postular mi club</span><span class="sm-only">Postular</span></button>
       <button type="button" class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
@@ -46,67 +47,59 @@
 
 <main>
   <!-- CARRUSEL -->
-  <section class="hero" id="inicio" aria-roledescription="carrusel" aria-label="Novedades del club">
+  <section class="hero" id="inicio" aria-roledescription="carrusel" aria-label="Club Pasos de Color">
     <div class="slides" id="slides">
-
       <div class="slide s-1 on" role="group" aria-roledescription="slide" aria-label="1 de 4">
         <div class="slide-bg"></div><div class="stars"></div>
         <div class="slide-inner">
           <div class="slide-copy">
-            <span class="kicker"><span class="dot"></span> Colaboración Good is Good × Nikao</span>
-            <h1 class="display">¡Sumate<br>al club!</h1>
-            <p class="tag-line">Participá gratis por<br><em>medias que hablan por vos</em></p>
-            <button type="button" class="cta cta-lg" data-join>¡Quiero participar!</button>
-          </div>
-          <div class="slide-art" aria-hidden="true">
-            <div class="halo" style="left:18%;top:8%;width:300px;height:300px;background:rgba(255,214,10,.25)"></div>
-            <div class="sock big-sock p-stripe-pink" style="--r:-12deg;left:12%;top:40px;--s:1.35"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
-            <div class="sock big-sock p-dots-blue" style="--r:10deg;left:46%;top:80px;--s:1.15;animation-delay:1.2s"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
-            <div class="sock p-stripe-mint" style="--r:-4deg;left:72%;top:10px;animation-delay:.6s"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="slide s-2" role="group" aria-roledescription="slide" aria-label="2 de 4">
-        <div class="slide-bg"></div><div class="stars"></div>
-        <div class="slide-inner">
-          <div class="slide-copy">
-            <span class="kicker"><span class="dot"></span> <span id="s2Date">Próxima ronda</span></span>
-            <h2 class="display big">En vivo<br>cada viernes</h2>
-            <p class="tag-line">Elegimos ganadores <em>a la vista de todos</em></p>
-            <div class="mini-cd" role="timer" aria-label="Tiempo para la próxima ronda">
-              <div><b id="hD">--</b><span>DÍAS</span></div>
-              <div><b id="hH">--</b><span>HS</span></div>
-              <div><b id="hM">--</b><span>MIN</span></div>
-              <div><b id="hS">--</b><span>SEG</span></div>
-            </div>
+            <span class="kicker"><span class="dot"></span> Good is Good × Nikao · Para los clubes de barrio</span>
+            <h1 class="display">Medias nuevas<br>para tu club</h1>
+            <p class="tag-line">Con sus colores. Para los que juegan<br><em>por amor a la camiseta.</em></p>
             <div style="display:flex;flex-wrap:wrap;gap:10px">
-              <button type="button" class="cta cta-lg" data-join>¡Anotarme gratis!</button>
-              <button type="button" class="ghost" data-open-live>Pantalla en vivo</button>
+              <button type="button" class="cta cta-lg" data-postular>Postular a mi club</button>
+              <button type="button" class="ghost" data-apoyar>Apoyar a un club</button>
             </div>
           </div>
           <div class="slide-art" aria-hidden="true">
-            <div class="halo" style="left:20%;top:10%;width:320px;height:320px;background:rgba(255,255,255,.18)"></div>
-            <div class="sock big-sock p-check" style="--r:8deg;left:22%;top:50px;--s:1.4"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
-            <div class="sock p-zig" style="--r:-14deg;left:62%;top:20px;--s:1.1;animation-delay:1s"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
+            <div class="halo" style="left:18%;top:8%;width:300px;height:300px;background:rgba(255,214,10,.22)"></div>
+            <div class="sock p-team" data-team-sock="0" style="--r:-12deg;left:10%;top:30px;--s:1.3;--c1:#C8102E;--c2:#FFFFFF"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
+            <div class="sock p-team" data-team-sock="1" style="--r:8deg;left:42%;top:70px;--s:1.15;--c1:#1F3FA8;--c2:#FFD60A;animation-delay:1.2s"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
+            <div class="sock p-team" data-team-sock="2" style="--r:-4deg;left:70%;top:10px;--c1:#0E8F4E;--c2:#FFFFFF;animation-delay:.6s"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
           </div>
         </div>
       </div>
 
-      <div class="slide s-3" role="group" aria-roledescription="slide" aria-label="3 de 4">
+      <div class="slide s-3" role="group" aria-roledescription="slide" aria-label="2 de 4">
         <div class="slide-bg"></div><div class="stars"></div>
         <div class="slide-inner">
           <div class="slide-copy">
-            <span class="kicker"><span class="dot"></span> Niveles del club</span>
-            <h2 class="display big">Sumá amigos,<br>subí de nivel</h2>
-            <p class="tag-line">Cada amigo que se anota<br>con tu link es <em>una chance más</em></p>
-            <a href="#niveles" class="cta cta-lg">Ver los niveles</a>
+            <span class="kicker"><span class="dot"></span> Medias personalizadas</span>
+            <h2 class="display big">Tus colores<br>en cada paso</h2>
+            <p class="tag-line">Al postular, elegís los colores del club<br>y <em>ves cómo quedarían sus medias.</em></p>
+            <button type="button" class="cta cta-lg" data-postular>Probar con mi club</button>
           </div>
           <div class="slide-art" aria-hidden="true">
-            <div class="sock p-stripe-mint" style="--r:-10deg;left:4%;top:110px;--s:.8"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
-            <div class="sock p-dots-orange" style="--r:-4deg;left:28%;top:70px;--s:.95;animation-delay:.4s"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
-            <div class="sock p-stripe-pink" style="--r:4deg;left:52%;top:30px;--s:1.1;animation-delay:.8s"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
-            <div class="sock p-check" style="--r:12deg;left:76%;top:0;--s:1.25;animation-delay:1.2s"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
+            <div class="sock p-team" style="--r:-8deg;left:8%;top:90px;--s:.9;--c1:#000000;--c2:#FFFFFF"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
+            <div class="sock p-team" style="--r:-2deg;left:32%;top:50px;--s:1.05;--c1:#6CC4EE;--c2:#FFFFFF;animation-delay:.4s"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
+            <div class="sock p-team" style="--r:6deg;left:58%;top:20px;--s:1.2;--c1:#7A1C2E;--c2:#7FC8E8;animation-delay:.8s"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide s-2" role="group" aria-roledescription="slide" aria-label="3 de 4">
+        <div class="slide-bg"></div><div class="stars"></div>
+        <div class="slide-inner">
+          <div class="slide-copy">
+            <span class="kicker"><span class="dot"></span> El barrio empuja</span>
+            <h2 class="display big">Cada hincha<br>suma</h2>
+            <p class="tag-line">Cada persona que apoya a su club<br>es <em>una chance más</em> para que gane.</p>
+            <a href="#ranking" class="cta cta-lg">Ver el ranking</a>
+          </div>
+          <div class="slide-art" aria-hidden="true">
+            <div class="halo" style="left:20%;top:10%;width:320px;height:320px;background:rgba(255,255,255,.16)"></div>
+            <div class="sock p-team" style="--r:10deg;left:24%;top:40px;--s:1.35;--c1:#FFD60A;--c2:#170A33"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
+            <div class="sock p-team" style="--r:-14deg;left:62%;top:20px;--s:1.05;--c1:#FF3D8B;--c2:#FFFFFF;animation-delay:1s"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
           </div>
         </div>
       </div>
@@ -115,20 +108,25 @@
         <div class="slide-bg"></div><div class="stars"></div>
         <div class="slide-inner">
           <div class="slide-copy">
-            <span class="kicker"><span class="dot"></span> Desde la fábrica</span>
-            <h2 class="display big">Pisá con<br>color</h2>
-            <p class="tag-line">Medias Good is Good, hechas acá,<br><em>para todo el país</em></p>
-            <button type="button" class="cta cta-lg" data-join>¡Sumarme ya!</button>
+            <span class="kicker"><span class="dot"></span> <span id="s2Date">Próxima ronda</span></span>
+            <h2 class="display big">En vivo, a la<br>vista de todos</h2>
+            <p class="tag-line">El club ganador sale <em>en pantalla,</em><br>en el momento.</p>
+            <div class="mini-cd" role="timer" aria-label="Tiempo para la próxima ronda">
+              <div><b id="hD">--</b><span>DÍAS</span></div>
+              <div><b id="hH">--</b><span>HS</span></div>
+              <div><b id="hM">--</b><span>MIN</span></div>
+              <div><b id="hS">--</b><span>SEG</span></div>
+            </div>
+            <button type="button" class="ghost" data-open-live>Pantalla en vivo</button>
           </div>
           <div class="slide-art" aria-hidden="true">
-            <div class="halo" style="left:24%;top:6%;width:300px;height:300px;background:rgba(46,230,176,.25)"></div>
-            <div class="sock big-sock p-dots-orange" style="--r:-8deg;left:20%;top:40px;--s:1.35"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
-            <div class="sock big-sock p-stripe-mint" style="--r:14deg;left:56%;top:70px;--s:1.15;animation-delay:1.4s"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
+            <div class="halo" style="left:24%;top:6%;width:300px;height:300px;background:rgba(46,230,176,.22)"></div>
+            <div class="sock p-team" style="--r:-8deg;left:20%;top:40px;--s:1.3;--c1:#FF8A3D;--c2:#170A33"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
+            <div class="sock p-team" style="--r:14deg;left:56%;top:70px;--s:1.1;--c1:#2EE6B0;--c2:#FFFFFF;animation-delay:1.4s"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
           </div>
         </div>
       </div>
     </div>
-
     <div class="car-ctrl">
       <div class="wrap">
         <div class="dots" id="dots" role="tablist" aria-label="Elegir slide"></div>
@@ -140,103 +138,138 @@
     </div>
   </section>
 
-  <!-- CONFIÁ EN TUS PASOS -->
-  <section class="lucky">
+  <!-- MANIFIESTO -->
+  <section class="manifesto">
     <div class="wrap">
-      <div class="lucky-card">
-        <div class="lucky-copy">
-          <h2 class="display">¡Confiá en tus pasos!</h2>
-          <p>Medias de la fábrica Good is Good en juego en cada ronda.</p>
-          <p class="prize-line" id="luckyPrize">Cargando la próxima ronda…</p>
-          <div class="lucky-actions">
-            <a href="#premios" class="ghost ghost-dark">Ver premios</a>
-            <button type="button" class="cta" data-join>¡Sumarme ya!</button>
-          </div>
-        </div>
-        <div class="bubbles" aria-hidden="true">
-          <div class="bubble b1"><div class="sock p-stripe-pink"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div></div>
-          <div class="bubble b2"><div class="sock p-dots-blue"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div></div>
-          <div class="bubble b3"><div class="sock p-stripe-mint"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div></div>
-          <div class="bubble b4"><div class="sock p-check"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div></div>
+      <div class="manifesto-box">
+        <h2 class="display">Esto es para el<br><em>club de la vuelta</em></h2>
+        <p>Para el que marca la cancha con cal el sábado temprano. Para la que lava las camisetas de todo el plantel. Para los pibes y las pibas que entrenan con lo que hay, y para los que bancan desde el alambrado.</p>
+        <p>Los clubes de barrio sostienen mucho más que un deporte. Queremos devolverles algo: medias nuevas, con sus colores, para que salgan a la cancha con orgullo.</p>
+        <div class="firma">Good is Good × Nikao</div>
+        <div class="stats-row">
+          <div class="stat-c"><b id="stTeams">0</b><span>clubes postulados</span></div>
+          <div class="stat-c"><b id="stFans">0</b><span>hinchas sumados</span></div>
+          <div class="stat-c"><b id="stCities">0</b><span>ciudades</span></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- BENEFICIOS -->
-  <section class="club" id="club">
+  <!-- CÓMO FUNCIONA -->
+  <section class="how" id="como">
     <div class="wrap">
       <div class="sec-head">
-        <div>
-          <h2 class="display h2">Un club para los<br>que pisan fuerte</h2>
-          <p class="sub">Entrar es gratis. Esto es lo que te llevás:</p>
-        </div>
-        <button type="button" class="cta" data-join>Quiero entrar</button>
+        <h2 class="display h2">Así de simple</h2>
+        <p class="sub" style="max-width:420px">Postular es gratis, para clubes de cualquier deporte y de cualquier punto del país.</p>
       </div>
-      <div class="perks">
-        <div class="perk">
-          <div class="perk-ico" style="background:var(--yellow)"><svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#170A33" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0113 0"/><path d="M17 7v6M14 10h6"/></svg></div>
-          <h3>Chances extra</h3>
-          <button type="button" class="perk-toggle" aria-expanded="false" aria-controls="perk1" aria-label="Ver más sobre chances extra"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
-          <p id="perk1" hidden>Te damos un link propio. Cada amigo que se anota con ese link te suma una chance más en todas las rondas, y te hace subir de nivel.</p>
+      <div class="how-grid">
+        <div class="how-step">
+          <span class="n" aria-hidden="true">1</span>
+          <div class="ico" style="background:var(--yellow)"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#170A33" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <h3>Postulá a tu club</h3>
+          <p>Dirigente, jugador, profe o socio: cargá el club, sus colores y contanos su historia.</p>
         </div>
-        <div class="perk">
-          <div class="perk-ico" style="background:var(--pink)"><svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#170A33" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="13" rx="3"/><path d="M10 9v5l4-2.5z"/><path d="M8 21h8"/></svg></div>
-          <h3>Rondas en vivo</h3>
-          <button type="button" class="perk-toggle" aria-expanded="false" aria-controls="perk2" aria-label="Ver más sobre rondas en vivo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
-          <p id="perk2" hidden>Cuando arranca la ronda, esta página se abre sola en modo en vivo en tu celu o compu: cuenta regresiva, mezcla de números y el ganador en pantalla.</p>
+        <div class="how-step">
+          <span class="n" aria-hidden="true">2</span>
+          <div class="ico" style="background:var(--pink)"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#170A33" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0113 0"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 14.5A5 5 0 0121.5 19"/></svg></div>
+          <h3>Sumá a tu gente</h3>
+          <p>Compartí el link del club con socios, familias y vecinos. Cada hincha que lo apoya es una chance más.</p>
         </div>
-        <div class="perk">
-          <div class="perk-ico" style="background:var(--mint)"><svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#170A33" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0112 0v5l2 2H4z"/><path d="M10 20a2 2 0 004 0"/></svg></div>
-          <h3>Avisos primero</h3>
-          <button type="button" class="perk-toggle" aria-expanded="false" aria-controls="perk3" aria-label="Ver más sobre avisos"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
-          <p id="perk3" hidden>Notificación en el celu, mail y recordatorio en Google Calendar: te enterás de cada ronda antes que nadie.</p>
+        <div class="how-step">
+          <span class="n" aria-hidden="true">3</span>
+          <div class="ico" style="background:var(--mint)"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#170A33" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="13" rx="3"/><path d="M10 9v5l4-2.5z"/><path d="M8 21h8"/></svg></div>
+          <h3>Mirá la ronda en vivo</h3>
+          <p>El día de la ronda elegimos al club ganador en esta página. Se lleva medias personalizadas con sus colores.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PREMIOS -->
-  <section class="prizes" id="premios">
+  <!-- PREMIO -->
+  <section class="prizes" id="premio">
     <div class="wrap">
       <span class="week" id="weekLabel">Próxima ronda</span>
-      <div class="sec-head" style="margin-bottom:20px">
-        <h2 class="display h2">Premios de<br>las rondas</h2>
-        <button type="button" class="cta" data-join>¡Participar ya!</button>
-      </div>
       <div class="poster">
         <div class="poster-copy">
           <span class="poster-date" id="posterDate">Fecha a confirmar</span>
-          <h3 id="posterTitle">Medias <em>Good is Good</em><br>× Nikao</h3>
-          <p id="posterPrize">Anotate y te avisamos apenas se anuncie la próxima ronda.</p>
+          <h3 id="posterTitle">Medias <em>personalizadas</em><br>para tu club</h3>
+          <p id="posterPrize">Postulá a tu club ahora: apenas anunciemos la próxima ronda, te avisamos.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:18px">
+            <button type="button" class="cta" data-postular>Postular a mi club</button>
+            <a class="ghost hidden" id="calBtn" href="#" target="_blank" rel="noopener">Agendar en Calendar</a>
+          </div>
         </div>
         <div class="poster-art" aria-hidden="true">
           <div class="balloon" style="left:4%;top:4%;background:var(--pink)"></div>
           <div class="balloon" style="left:78%;top:0;background:var(--yellow);animation-delay:1s"></div>
           <div class="balloon" style="left:86%;top:52%;background:var(--mint);animation-delay:2s;width:54px;height:66px"></div>
-          <div class="sock big-sock p-stripe-pink" style="--r:-10deg;left:18%;top:40px;--s:1.15"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
-          <div class="sock big-sock p-dots-blue" style="--r:10deg;left:50%;top:60px;--s:1.05;animation-delay:.8s"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
+          <div class="sock p-team" id="posterSock" style="--r:-6deg;left:30%;top:20px;--s:1.25;--c1:#C8102E;--c2:#FFFFFF"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
         </div>
-        <div class="poster-foot">PARTICIPACIÓN GRATUITA · SIN OBLIGACIÓN DE COMPRA · ENVÍOS A TODA ARGENTINA</div>
+        <div class="poster-foot">PARTICIPACIÓN GRATUITA · SIN OBLIGACIÓN DE COMPRA · CLUBES DE TODA ARGENTINA</div>
       </div>
-      <div class="rounds-list" id="roundsList"></div>
+    </div>
+  </section>
+
+  <!-- RANKING -->
+  <section class="rank" id="ranking">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <h2 class="display h2">Ranking de clubes</h2>
+          <p class="sub">Cuantos más hinchas, más chances. Buscá el tuyo y bancalo.</p>
+        </div>
+        <button type="button" class="cta" data-postular>¿No está tu club? Postulalo</button>
+      </div>
+      <div class="rank-tools">
+        <label class="sr-only" for="q">Buscar club</label>
+        <input id="q" type="search" placeholder="Buscar por club, barrio o ciudad" autocomplete="off">
+        <label class="sr-only" for="provF">Provincia</label>
+        <select id="provF"><option value="">Todas las provincias</option></select>
+      </div>
+      <div class="rank-list" id="rankList"></div>
+      <button type="button" class="ghost more-btn hidden" id="moreBtn">Ver más clubes</button>
+    </div>
+  </section>
+
+  <!-- HISTORIAS -->
+  <section class="stories" id="historias">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <h2 class="display h2">Lo que cuentan<br>los clubes</h2>
+          <p class="sub">Escrito por la gente que los sostiene.</p>
+        </div>
+      </div>
+      <div class="story-track" id="storyTrack"></div>
+    </div>
+  </section>
+
+  <!-- MAPA -->
+  <section class="map" id="mapa">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <h2 class="display h2">Mapa de barrios</h2>
+          <p class="sub">De dónde son los clubes que ya se postularon.</p>
+        </div>
+      </div>
+      <div class="map-grid" id="mapGrid"></div>
     </div>
   </section>
 
   <!-- AVISOS -->
-  <section class="alerts" id="avisos">
+  <section class="alerts" id="avisos" style="padding-top:72px">
     <div class="wrap">
       <div class="alert-card">
         <div class="alert-art" aria-hidden="true">
-          <div class="sock p-zig" style="--r:-20deg;left:30px;top:-10px;--s:.62"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
+          <div class="sock p-team" style="--r:-20deg;left:30px;top:-10px;--s:.62;--c1:#B794FF;--c2:#5B2BB5"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div>
         </div>
         <div class="alert-copy">
-          <h2 class="display">Podés estar <em>aún más adentro</em></h2>
-          <p>Activá los avisos y enterate de cada ronda antes que nadie.</p>
+          <h2 class="display">Que no te agarre <em>desprevenido</em></h2>
+          <p>Activá los avisos y enterate cuando arranque la ronda.</p>
           <div class="alert-btns">
             <button type="button" class="cta" data-push id="pushBtn">Activar avisos</button>
-            <a class="ghost" id="calBtn" href="#" target="_blank" rel="noopener">Agendar en Calendar</a>
-            <a class="ghost" id="igBtn" href="#" target="_blank" rel="noopener">Seguir en Instagram</a>
+            <a class="ghost" id="igBtn" href="#" target="_blank" rel="noopener">Seguir a @goodisgood</a>
           </div>
         </div>
       </div>
@@ -244,46 +277,32 @@
   </section>
 
   <!-- GANADORES -->
-  <section class="winners" id="ganadores">
+  <section class="winners-v2" id="ganadores">
     <div class="wrap">
       <div class="sec-head">
-        <h2 class="display h2">¡Vos podrías ser<br>el próximo!</h2>
-        <p class="sub">Los que ya pisan con medias nuevas</p>
-        <button type="button" class="cta" data-join style="margin-top:8px">¡Sumarme ya!</button>
+        <div>
+          <h2 class="display h2">Clubes que ya<br>estrenan medias</h2>
+          <p class="sub">Cada ronda suma un club a esta pared.</p>
+        </div>
       </div>
-    </div>
-    <div class="marquee"><div class="track" id="track1"></div></div>
-    <div class="marquee"><div class="track rev" id="track2"></div></div>
-  </section>
-
-  <!-- NIVELES -->
-  <section class="levels" id="niveles">
-    <div class="wrap">
-      <div class="sec-head">
-        <h2 class="display h2">Elegí hasta dónde llegar</h2>
-        <p class="sub">Todos los niveles son <strong>gratis</strong>. Subís sumando amigos con tu link.</p>
-      </div>
-      <div class="my-level hidden" id="myLevel"></div>
-      <div class="lv-grid" id="lvGrid"></div>
+      <div class="win-grid" id="winGrid"></div>
     </div>
   </section>
 
   <!-- FAQ -->
   <section class="faq" id="preguntas">
     <div class="wrap">
-      <div class="sec-head" style="justify-content:center;text-align:center">
-        <h2 class="display h2">¿Tenés dudas?</h2>
-      </div>
+      <div class="sec-head" style="justify-content:center;text-align:center"><h2 class="display h2">Preguntas</h2></div>
       <div class="faq-list">
-        <details><summary>¿Qué es el Club Pasos de Color?<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>Es la comunidad de la colaboración entre Good is Good y Nikao. Te anotás gratis y participás en rondas en vivo donde elegimos ganadores de medias de la fábrica.</p></details>
-        <details><summary>¿Cómo me sumo?<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>Tocá "¡Sumarme!", seguí las cuentas de Good is Good y Nikao, completá tus datos y listo: te damos tu número de participación y tu link para sumar amigos.</p></details>
-        <details><summary>¿Tengo que pagar algo?<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>No. Todos los niveles son gratis y no hace falta comprar nada para participar.</p></details>
-        <details><summary>¿Cuándo son las rondas?<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>Las anunciamos en esta página con una cuenta regresiva y te avisamos por los medios que elijas. Una vez anotado, participás en todas sin volver a anotarte.</p></details>
-        <details><summary>¿Cómo se elige a quien gana?<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>El sistema elige al azar entre todos los anotados, en vivo y a la vista de todos. Tu nivel define cuántas chances tenés: una base más una por cada amigo que sumaste.</p></details>
-        <details><summary>¿Cómo me contactan si gano?<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>Lo ves en pantalla con tu número y te escribimos al mail y por Instagram. Tenés 72 horas para responder.</p></details>
-        <details><summary>¿Envían a todo el país?<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>Sí, las medias llegan sin costo a cualquier punto de Argentina.</p></details>
+        <details><summary>¿Quién puede postular a un club?<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>Alguien que sea parte del club y tenga su aval: dirigente, jugador o jugadora, entrenador, socio. Si el club ya está postulado, no hace falta postularlo de nuevo: sumate como hincha.</p></details>
+        <details><summary>¿Qué clubes pueden participar?<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>Clubes de barrio de cualquier deporte y de cualquier lugar de Argentina.</p></details>
+        <details><summary>¿Tiene algún costo?<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>No. Postular y apoyar es gratis, y no hace falta comprar nada.</p></details>
+        <details><summary>¿Qué gana el club?<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>Medias personalizadas con los colores del club. El premio exacto de cada ronda lo anunciamos en esta página antes de que se juegue.</p></details>
+        <details><summary>¿Cómo se elige al club ganador?<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>El sistema elige al azar entre los clubes postulados, en vivo y a la vista de todos. Cada hincha que apoya a un club le suma una chance: el que tiene más gente detrás tiene más chances, pero cualquier club puede ganar.</p></details>
+        <details><summary>¿Puedo apoyar a más de un club?<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>No: cada persona apoya a un solo club, con su mail. Así el ranking es justo para todos.</p></details>
+        <details><summary>¿Cómo se entera el club si gana?<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>Lo ve en pantalla en la ronda en vivo y le escribimos a la persona que lo postuló, por mail y WhatsApp, para coordinar los colores y el envío.</p></details>
       </div>
-      <div style="text-align:center;margin-top:28px"><button type="button" class="cta" data-join>¡Quiero sumarme!</button></div>
+      <div style="text-align:center;margin-top:28px"><button type="button" class="cta" data-postular>Postular a mi club</button></div>
     </div>
   </section>
 </main>
@@ -294,7 +313,7 @@
       <div>
         <a href="#inicio" class="logo" aria-label="Club Pasos de Color">
           <span class="logo-badge" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-          <span class="logo-text"><b>Club Pasos de Color</b><span>Good is Good × Nikao</span></span>
+          <span class="logo-text"><b>Club Pasos de Color</b><span>Medias para clubes de barrio</span></span>
         </a>
         <div class="socials">
           <a id="sIg" href="#" target="_blank" rel="noopener" aria-label="Instagram de Good is Good"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
@@ -305,17 +324,17 @@
       <div>
         <h4>El club</h4>
         <ul>
-          <li><a href="#premios">Premios</a></li>
-          <li><a href="#ganadores">Ganadores</a></li>
-          <li><a href="#niveles">Niveles</a></li>
-          <li><a href="#preguntas">Preguntas frecuentes</a></li>
+          <li><a href="#como">Cómo funciona</a></li>
+          <li><a href="#ranking">Ranking de clubes</a></li>
+          <li><a href="#mapa">Mapa de barrios</a></li>
+          <li><a href="#ganadores">Clubes ganadores</a></li>
         </ul>
       </div>
       <div>
         <h4>Contacto</h4>
         <ul>
           <li>Escribinos por Instagram a <a id="fIg" href="#" target="_blank" rel="noopener">@goodisgood</a></li>
-          <li>¿Ya te anotaste? <button type="button" class="link-like" data-me style="background:none;border:none;color:var(--mint);text-decoration:underline;padding:0;font-size:15px">Ver mi número</button></li>
+          <li><button type="button" data-me style="background:none;border:none;color:var(--mint);text-decoration:underline;padding:0;font-size:15px">Ver mi club</button></li>
         </ul>
       </div>
     </div>
@@ -326,85 +345,134 @@
   </div>
 </footer>
 
-<!-- SUMARME -->
-<div class="sheet hidden" id="joinSheet" role="dialog" aria-modal="true" aria-labelledby="joinTitle">
+<!-- POSTULAR CLUB -->
+<div class="sheet hidden" id="postSheet" role="dialog" aria-modal="true" aria-labelledby="postTitle">
   <div class="sheet-box">
     <button type="button" class="sheet-close" data-close aria-label="Cerrar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
-    <div class="steps-bar" aria-hidden="true"><i id="sb1" class="on"></i><i id="sb2"></i><i id="sb3"></i></div>
+    <div class="steps-bar" aria-hidden="true"><i id="pb1" class="on"></i><i id="pb2"></i><i id="pb3"></i></div>
 
-    <div id="step1">
-      <h3 id="joinTitle">Paso 1 · Seguinos</h3>
-      <p class="lead">Tocá cada botón para seguir las cuentas. Se tilda solo.</p>
-      <div id="reqList"></div>
-      <div class="sheet-actions"><button type="button" class="cta cta-lg" id="toStep2" disabled>Siguiente</button></div>
-      <p class="hint" id="h1"></p>
-    </div>
-
-    <form id="step2" class="hidden" novalidate>
-      <h3>Paso 2 · Tus datos</h3>
-      <p class="lead">Para contactarte si ganás.</p>
-      <div class="field"><label for="fName">Nombre y apellido</label><input id="fName" type="text" autocomplete="name" maxlength="80" placeholder="Ej: Sofía Martínez" required></div>
-      <div class="field"><label for="fEmail">Email</label><input id="fEmail" type="email" autocomplete="email" inputmode="email" maxlength="120" placeholder="tunombre@gmail.com" required></div>
+    <form id="p1" novalidate>
+      <h3 id="postTitle">Tu club</h3>
+      <p class="lead">Contanos qué club querés postular.</p>
+      <div class="field"><label for="tName">Nombre del club</label><input id="tName" type="text" maxlength="80" placeholder="Ej: Club Social y Deportivo Villa Unión" required></div>
       <div class="row">
-        <div class="field"><label for="fIg2">Tu Instagram</label><input id="fIg2" type="text" maxlength="60" placeholder="@usuario" autocapitalize="off"></div>
-        <div class="field"><label for="fClub">¿De qué club sos?</label><input id="fClub" type="text" maxlength="60" placeholder="Ej: Lanús"></div>
+        <div class="field"><label for="tSport">Deporte</label>
+          <select id="tSport"><option>Fútbol</option><option>Fútbol femenino</option><option>Futsal</option><option>Baby fútbol</option><option>Básquet</option><option>Vóley</option><option>Hockey</option><option>Handball</option><option>Rugby</option><option>Varios deportes</option><option>Otro</option></select>
+        </div>
+        <div class="field"><label for="tBarrio">Barrio</label><input id="tBarrio" type="text" maxlength="80" placeholder="Ej: Villa Unión"></div>
       </div>
       <div class="row">
-        <div class="field"><label for="fCity">Ciudad</label><input id="fCity" type="text" maxlength="80" autocomplete="address-level2" placeholder="Ej: Rosario"></div>
-        <div class="field"><label for="fPhone">WhatsApp (opcional)</label><input id="fPhone" type="tel" maxlength="30" autocomplete="tel" inputmode="tel" placeholder="11 1234 5678"></div>
+        <div class="field"><label for="tCity">Ciudad o localidad</label><input id="tCity" type="text" maxlength="80" placeholder="Ej: Lanús" required></div>
+        <div class="field"><label for="tProv">Provincia</label><select id="tProv" required></select></div>
       </div>
-      <span style="font-weight:700;font-size:14px" id="chLbl">Avisame por</span>
-      <div class="chips" role="group" aria-labelledby="chLbl">
-        <button type="button" class="chip" data-ch="gmail" aria-pressed="true">Mail</button>
-        <button type="button" class="chip" data-ch="push" aria-pressed="true">Notificación</button>
-        <button type="button" class="chip" data-ch="whatsapp" aria-pressed="false">WhatsApp</button>
-        <button type="button" class="chip" data-ch="calendar" aria-pressed="false">Calendario</button>
-      </div>
-      <label class="consent"><input type="checkbox" id="fConsent"> Acepto que me contacten si gano. Soy mayor de 18 o tengo permiso de un adulto.</label>
-      <div class="sheet-actions">
-        <button type="button" class="ghost ghost-dark" id="back1">Atrás</button>
-        <button type="submit" class="cta cta-lg" id="submitBtn" disabled>¡Sumarme al club!</button>
-      </div>
-      <p class="hint" id="h2" aria-live="polite"></p>
+      <div class="field"><label for="tIg">Instagram del club (opcional)</label><input id="tIg" type="text" maxlength="60" placeholder="@club" autocapitalize="off"></div>
+      <div class="sheet-actions"><button type="submit" class="cta cta-lg" id="p1Next" disabled>Siguiente</button></div>
+      <p class="hint" id="ph1" aria-live="polite"></p>
     </form>
 
-    <div id="step3" class="hidden done-box" aria-live="polite">
-      <h3 id="okTitle">¡Ya sos del club!</h3>
-      <p class="lead" id="okText" style="margin:0">Quedaste anotado para todas las rondas.</p>
-      <div class="ticket">
-        <small>TU NÚMERO DE PARTICIPACIÓN</small>
-        <b id="okTicket">PDC-000000</b>
-        <div class="lvl" id="okLevel">Nivel Descalzo · 1 chance</div>
-      </div>
-      <div class="share">
-        <strong>Sumá amigos y subí de nivel:</strong>
-        <code id="okLink"></code>
-        <div class="share-btns">
-          <a class="wa" id="waShare" href="#" target="_blank" rel="noopener">Compartir por WhatsApp</a>
-          <button type="button" id="copyLink">Copiar link</button>
-          <button type="button" id="nativeShare" class="hidden">Compartir</button>
+    <form id="p2" class="hidden" novalidate>
+      <h3>Sus colores y su historia</h3>
+      <p class="lead">Así se verían las medias de tu club.</p>
+      <div class="designer">
+        <div class="designer-prev" aria-hidden="true"><div class="sock p-team" id="designSock"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div></div>
+        <div class="designer-ctrl">
+          <div class="color-row"><label for="c1">Color 1</label><input id="c1" type="color" value="#C8102E"><span id="sw1" style="display:flex;gap:6px;flex-wrap:wrap"></span></div>
+          <div class="color-row"><label for="c2">Color 2</label><input id="c2" type="color" value="#FFFFFF"><span id="sw2" style="display:flex;gap:6px;flex-wrap:wrap"></span></div>
         </div>
       </div>
-      <div class="sheet-actions" style="justify-content:center">
-        <button type="button" class="ghost ghost-dark" id="anotherBtn">Anotar a otra persona</button>
-        <button type="button" class="cta" data-close>Listo</button>
+      <div class="field"><label for="tStory">¿Por qué tu club se merece medias nuevas?</label>
+        <textarea id="tStory" maxlength="400" placeholder="¿Desde cuándo existe? ¿Quiénes lo sostienen? ¿Qué significa para el barrio?"></textarea>
+        <div class="counter"><span id="storyCount">0</span>/400 · Se publica en la página</div>
       </div>
+      <div class="sheet-actions">
+        <button type="button" class="ghost ghost-dark" data-back="1">Atrás</button>
+        <button type="submit" class="cta cta-lg">Siguiente</button>
+      </div>
+    </form>
+
+    <form id="p3" class="hidden" novalidate>
+      <h3>¿Quién lo postula?</h3>
+      <p class="lead">Si el club gana, te escribimos a vos para coordinar.</p>
+      <div class="row">
+        <div class="field"><label for="rName">Tu nombre y apellido</label><input id="rName" type="text" maxlength="80" autocomplete="name" required></div>
+        <div class="field"><label for="rRole">Tu rol en el club</label><select id="rRole"><option>Dirigente</option><option>Jugador/a</option><option>Entrenador/a</option><option>Socio/a</option><option>Familia</option><option>Hincha</option></select></div>
+      </div>
+      <div class="row">
+        <div class="field"><label for="rEmail">Email</label><input id="rEmail" type="email" maxlength="120" autocomplete="email" inputmode="email" required></div>
+        <div class="field"><label for="rPhone">WhatsApp</label><input id="rPhone" type="tel" maxlength="30" autocomplete="tel" inputmode="tel" placeholder="11 1234 5678" required></div>
+      </div>
+      <span style="font-weight:700;font-size:14px">Seguí a las marcas</span>
+      <div class="follow-row" id="follow3"></div>
+      <label class="consent"><input type="checkbox" id="rConsent"> Soy parte del club y tengo su aval para postularlo. Acepto que me contacten y que la historia se publique en esta página.</label>
+      <div class="sheet-actions">
+        <button type="button" class="ghost ghost-dark" data-back="2">Atrás</button>
+        <button type="submit" class="cta cta-lg" id="p3Send" disabled>Postular al club</button>
+      </div>
+      <p class="hint" id="ph3" aria-live="polite"></p>
+    </form>
+
+    <div id="p4" class="hidden done-box" aria-live="polite">
+      <div class="done-sock" aria-hidden="true"><div class="sock p-team" id="doneSock"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div></div>
+      <h3 id="p4Title">¡Tu club ya está en carrera!</h3>
+      <p class="lead" id="p4Text" style="margin:0">Ahora sumá a tu gente: cada hincha es una chance más.</p>
+      <div class="share">
+        <strong>Link para apoyar a tu club:</strong>
+        <code id="p4Link"></code>
+        <div class="share-btns">
+          <a class="wa" id="p4Wa" href="#" target="_blank" rel="noopener">Compartir por WhatsApp</a>
+          <button type="button" id="p4Copy">Copiar link</button>
+          <button type="button" id="p4Native" class="hidden">Compartir</button>
+        </div>
+      </div>
+      <button type="button" class="cta" data-close>Listo</button>
     </div>
   </div>
 </div>
 
-<!-- MI NÚMERO -->
-<div class="sheet hidden" id="meSheet" role="dialog" aria-modal="true" aria-labelledby="meTitle">
+<!-- APOYAR CLUB -->
+<div class="sheet hidden" id="supSheet" role="dialog" aria-modal="true" aria-labelledby="supTitle">
   <div class="sheet-box">
     <button type="button" class="sheet-close" data-close aria-label="Cerrar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
-    <h3 id="meTitle">Mi número</h3>
-    <p class="lead">Poné tu número de participación para ver tu nivel y tu link.</p>
-    <form id="meForm" class="row" style="align-items:flex-end;gap:10px">
-      <div class="field" style="margin:0"><label for="meTicket">Número</label><input id="meTicket" type="text" placeholder="PDC-XXXXXX" autocapitalize="characters" maxlength="12" required></div>
-      <button type="submit" class="cta" style="flex:0 0 auto">Ver</button>
+
+    <div id="s0">
+      <h3 id="supTitle">Elegí el club que querés bancar</h3>
+      <div class="field" style="margin-top:12px"><label for="sq">Buscar</label><input id="sq" type="search" placeholder="Nombre, barrio o ciudad" autocomplete="off"></div>
+      <div class="picker-list" id="pickList"></div>
+      <p class="lead" style="font-size:14px">¿No está? <button type="button" data-postular style="background:none;border:none;color:var(--violet-2);font-weight:700;text-decoration:underline;padding:0;font-size:14px">Postulalo vos</button></p>
+    </div>
+
+    <form id="s1" class="hidden" novalidate>
+      <div class="club-head" id="supHead"></div>
+      <p class="lead" id="supStory" style="font-style:italic"></p>
+      <div class="row">
+        <div class="field"><label for="fName">Tu nombre</label><input id="fName" type="text" maxlength="80" autocomplete="name" required></div>
+        <div class="field"><label for="fCity">Tu ciudad</label><input id="fCity" type="text" maxlength="80" autocomplete="address-level2"></div>
+      </div>
+      <div class="field"><label for="fEmail">Email</label><input id="fEmail" type="email" maxlength="120" autocomplete="email" inputmode="email" required></div>
+      <span style="font-weight:700;font-size:14px">Seguí a las marcas</span>
+      <div class="follow-row" id="follow1"></div>
+      <label class="consent"><input type="checkbox" id="fConsent"> Acepto que me avisen de las rondas. Apoyo a un solo club.</label>
+      <div class="sheet-actions">
+        <button type="button" class="ghost ghost-dark" id="supBack">Cambiar club</button>
+        <button type="submit" class="cta cta-lg" id="supSend" disabled>Apoyar al club</button>
+      </div>
+      <p class="hint" id="sh1" aria-live="polite"></p>
     </form>
-    <p class="hint" id="meHint"></p>
-    <p class="lead" style="font-size:14px;margin-top:4px">¿No lo tenés? <button type="button" data-join style="background:none;border:none;color:var(--violet-2);font-weight:700;text-decoration:underline;padding:0;font-size:14px">Anotate de nuevo con tu mismo mail</button> y te lo mostramos.</p>
+
+    <div id="s2" class="hidden done-box" aria-live="polite">
+      <div class="done-sock" aria-hidden="true"><div class="sock p-team" id="supDoneSock"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div></div>
+      <h3 id="s2Title">¡Ya sos parte de la hinchada!</h3>
+      <p class="lead" id="s2Text" style="margin:0"></p>
+      <div class="share">
+        <strong>Pasale el link a más gente del club:</strong>
+        <code id="s2Link"></code>
+        <div class="share-btns">
+          <a class="wa" id="s2Wa" href="#" target="_blank" rel="noopener">Compartir por WhatsApp</a>
+          <button type="button" id="s2Copy">Copiar link</button>
+        </div>
+      </div>
+      <button type="button" class="cta" data-close>Listo</button>
+    </div>
   </div>
 </div>
 
@@ -422,20 +490,26 @@
       <p class="live-sub">Dejá esta pantalla abierta: se activa sola cuando empieza.</p>
     </div>
     <div id="liveCount" class="hidden" style="display:flex;flex-direction:column;align-items:center;gap:12px">
-      <p class="live-sub">Elegimos ganador en</p>
+      <p class="live-sub">Elegimos al club ganador en</p>
       <div class="live-num" id="liveNum">10</div>
-      <p class="live-sub" id="livePlayers">Todos los anotados están en juego</p>
+      <p class="live-sub" id="livePlayers">Todos los clubes están en juego</p>
     </div>
     <div id="liveRoll" class="hidden" style="display:flex;flex-direction:column;align-items:center;gap:14px;width:100%">
-      <p class="live-sub">Mezclando participantes…</p>
-      <div class="live-roll" id="liveRollText">PDC-000000</div>
+      <p class="live-sub">Mezclando clubes…</p>
+      <div class="live-roll" id="liveRollText" style="font-size:clamp(34px,7vw,64px)">—</div>
     </div>
-    <div id="liveWin" class="hidden" style="display:flex;flex-direction:column;align-items:center;gap:16px;width:100%">
-      <p class="live-big">¡Tenemos ganador!</p>
-      <div class="live-winner"><div class="name" id="winName">—</div><div class="meta" id="winMeta"></div><div class="tk" id="winTicket"></div></div>
-      <div class="live-me hidden" id="winMe">¡Sos vos! Revisá tu mail: te escribimos para coordinar el envío.</div>
-      <p class="live-sub">Si no ganaste, ya quedás anotado para la próxima ronda.</p>
-      <button type="button" class="ghost" id="liveBack">Volver al club</button>
+    <div id="liveWin" class="hidden" style="display:flex;flex-direction:column;align-items:center;gap:14px;width:100%">
+      <p class="live-big">¡Medias nuevas para…!</p>
+      <div class="live-winner team" id="winBox">
+        <div class="stripe" aria-hidden="true"></div>
+        <div class="done-sock" aria-hidden="true" style="height:120px"><div class="sock p-team" id="winSock" style="transform:scale(.5)"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div></div>
+        <div class="name" id="winName">—</div>
+        <div class="meta" id="winMeta"></div>
+        <div class="tk" id="winTicket"></div>
+      </div>
+      <div class="live-me hidden" id="winMe">¡Es tu club! Felicitaciones a todo el barrio.</div>
+      <p class="live-sub">Gracias a todos los clubes y a cada hincha que se sumó. Seguimos en la próxima.</p>
+      <button type="button" class="ghost" id="liveBack">Volver</button>
     </div>
   </div>
 </div>

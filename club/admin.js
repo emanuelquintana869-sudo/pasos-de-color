@@ -6,7 +6,6 @@ const $ = (id) => document.getElementById(id);
 const TZ = 'America/Argentina/Buenos_Aires';
 let PASS = sessionStorage.getItem('club_admin') || '';
 let rounds = [];
-let participants = [];
 let pickTimer = null;
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -80,7 +79,7 @@ $('rounds').addEventListener('click', async (e) => {
       const secs = Math.max(5, Math.min(600, Number($('secs').value) || 30));
       const r = await rpc('club_admin_start_live', { p_round_id: id, p_seconds: secs });
       toast('¡Ronda en vivo! La pantalla se abrió para todos.');
-      if ($('autoNotify').checked) sendNotify('¡La ronda está EN VIVO!', `Entrá ya: en ${secs} segundos elegimos ganador de medias Good is Good × Nikao.`, true, false, '/?envivo=1');
+      if ($('autoNotify').checked) sendNotify('¡La ronda está EN VIVO!', `Entrá ya: en ${secs} segundos elegimos al club de barrio que gana medias nuevas.`, true, false, '/?envivo=1');
       if ($('autoPick').checked) {
         clearTimeout(pickTimer);
         const ms = new Date(r.countdown_ends_at).getTime() - Date.now() + 1500;
@@ -107,7 +106,7 @@ async function pick(id) {
   clearTimeout(pickTimer);
   try {
     const r = await rpc('club_admin_pick_winner', { p_round_id: id });
-    toast(`Ganó ${r.winner_name} (${r.winner_ticket})`, 6000);
+    toast(`Ganó ${r.winner_name}`, 6000);
     await loadRounds();
     const c = await rpc('club_admin_winner_contact', { p_round_id: id });
     const box = document.querySelector(`.round[data-id="${id}"]`);
@@ -120,10 +119,15 @@ function showContact(box, c) {
   if (!c) return;
   const d = document.createElement('div');
   d.className = 'contact';
-  d.innerHTML = `<strong>${esc(c.name)}</strong> · ${esc(c.ticket)}<br>
-    Mail: <a href="mailto:${esc(c.email)}">${esc(c.email)}</a>${c.instagram ? ` · Instagram: <a href="https://instagram.com/${esc(c.instagram.replace('@', ''))}" target="_blank" rel="noopener">${esc(c.instagram)}</a>` : ''}
-    ${c.phone ? ` · WhatsApp: <a href="https://wa.me/${esc(c.phone.replace(/\D/g, ''))}" target="_blank" rel="noopener">${esc(c.phone)}</a>` : ''}<br>
-    ${esc([c.club, c.city].filter(Boolean).join(' · '))}`;
+  d.innerHTML = `<strong>${esc(c.team)}</strong> · ${esc(c.code)} · ${c.supporters} hinchas<br>
+    Postuló: <strong>${esc(c.name)}</strong>${c.role ? ` (${esc(c.role)})` : ''}<br>
+    Mail: <a href="mailto:${esc(c.email)}">${esc(c.email)}</a>
+    ${c.phone ? ` · WhatsApp: <a href="https://wa.me/${esc(c.phone.replace(/\D/g, ''))}" target="_blank" rel="noopener">${esc(c.phone)}</a>` : ''}
+    ${c.instagram ? ` · Instagram: <a href="https://instagram.com/${esc(c.instagram.replace('@', ''))}" target="_blank" rel="noopener">${esc(c.instagram)}</a>` : ''}<br>
+    ${esc([c.barrio, c.city, c.province].filter(Boolean).join(', '))} · Colores:
+    <span style="display:inline-block;width:16px;height:16px;border-radius:50%;background:${esc(c.color1)};vertical-align:middle;border:1px solid #0003"></span>
+    <span style="display:inline-block;width:16px;height:16px;border-radius:50%;background:${esc(c.color2)};vertical-align:middle;border:1px solid #0003"></span>
+    ${esc(c.color1)} / ${esc(c.color2)}`;
   box.appendChild(d);
 }
 
@@ -156,27 +160,46 @@ $('notifyForm').addEventListener('submit', (e) => {
   sendNotify($('nTitle').value, $('nBody').value, $('nPush').checked, $('nMail').checked);
 });
 
-// ---------- Participantes ----------
+// ---------- Clubes ----------
+let teams = [];
 async function loadParticipants() {
-  try { participants = await rpc('club_admin_list_participants'); } catch (err) { toast(err.message); return; }
-  $('sPart').textContent = participants.length;
-  $('sRef').textContent = participants.filter((p) => p.referred_by).length;
-  $('pBody').innerHTML = participants.map((p) => `<tr>
-    <td>${esc(new Date(p.created_at).toLocaleString('es-AR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', timeZone: TZ }))}</td>
-    <td>${esc(p.name)}</td><td>${esc(p.email)}</td><td>${esc(p.instagram || '')}</td><td>${esc(p.club || '')}</td>
-    <td>${esc(p.city || '')}</td><td>${esc(p.phone || '')}</td><td>${esc(p.ticket)}</td><td>${p.chances}</td></tr>`).join('')
-    || '<tr><td colspan="9">Todavía no hay participantes.</td></tr>';
+  try { teams = await rpc('club_admin_list_teams'); } catch (err) { toast(err.message); return; }
+  $('sPart').textContent = teams.filter((t) => t.visible).length;
+  $('sRef').textContent = teams.reduce((n, t) => n + Number(t.supporters), 0);
+  $('pBody').innerHTML = teams.map((t) => `<tr style="${t.visible ? '' : 'opacity:.5'}">
+    <td><span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:${esc(t.color1)};border:3px solid ${esc(t.color2)};box-shadow:0 0 0 1px #0003;vertical-align:middle"></span> <strong>${esc(t.name)}</strong><br><small>${esc(t.code)} · ${esc(t.sport || '')}</small></td>
+    <td>${esc([t.barrio, t.city].filter(Boolean).join(', '))}<br><small>${esc(t.province)}</small></td>
+    <td><strong>${t.supporters}</strong></td>
+    <td>${esc(t.rep_name)}${t.rep_role ? `<br><small>${esc(t.rep_role)}</small>` : ''}</td>
+    <td><a href="mailto:${esc(t.rep_email)}">${esc(t.rep_email)}</a>${t.rep_phone ? `<br><a href="https://wa.me/${esc(t.rep_phone.replace(/\D/g, ''))}" target="_blank" rel="noopener">${esc(t.rep_phone)}</a>` : ''}</td>
+    <td style="white-space:normal;min-width:240px;max-width:360px"><small>${esc(t.story || '—')}</small></td>
+    <td><div class="acts"><button type="button" data-vis="${esc(t.code)}" data-on="${t.visible ? '0' : '1'}">${t.visible ? 'Ocultar' : 'Mostrar'}</button></div></td>
+  </tr>`).join('') || '<tr><td colspan="7">Todavía no se postuló ningún club.</td></tr>';
 }
+$('pBody').addEventListener('click', async (e) => {
+  const b = e.target.closest('[data-vis]');
+  if (!b) return;
+  const on = b.dataset.on === '1';
+  if (!on && !confirm('¿Ocultar este club? Deja de aparecer en la página y no entra en las rondas.')) return;
+  try { await rpc('club_admin_set_team_visible', { p_code: b.dataset.vis, p_visible: on }); toast(on ? 'Club visible de nuevo' : 'Club oculto'); loadParticipants(); }
+  catch (err) { toast(err.message); }
+});
 $('reloadP').addEventListener('click', loadParticipants);
-$('csv').addEventListener('click', () => {
-  const cols = ['created_at', 'name', 'email', 'instagram', 'club', 'city', 'phone', 'ticket', 'referred_by', 'chances'];
+function downloadCsv(rows, cols, name) {
   const q = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
-  const rows = [cols.join(';'), ...participants.map((p) => cols.map((c) => q(p[c])).join(';'))];
-  const blob = new Blob(['﻿' + rows.join('\n')], { type: 'text/csv;charset=utf-8' });
+  const out = [cols.join(';'), ...rows.map((r) => cols.map((c) => q(r[c])).join(';'))];
+  const blob = new Blob(['\ufeff' + out.join('\n')], { type: 'text/csv;charset=utf-8' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `participantes-club-pasos-de-color-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.download = `${name}-${new Date().toISOString().slice(0, 10)}.csv`;
   a.click();
+}
+$('csv').addEventListener('click', () => downloadCsv(teams,
+  ['created_at', 'code', 'name', 'sport', 'barrio', 'city', 'province', 'color1', 'color2', 'supporters', 'rep_name', 'rep_role', 'rep_email', 'rep_phone', 'team_instagram', 'visible', 'story'],
+  'clubes-club-pasos-de-color'));
+$('csvFans').addEventListener('click', async () => {
+  try { const fans = await rpc('club_admin_list_supporters'); downloadCsv(fans, ['created_at', 'team_code', 'team_name', 'name', 'email', 'city'], 'hinchas-club-pasos-de-color'); }
+  catch (err) { toast(err.message); }
 });
 
 if (PASS) rpc('club_admin_login').then(enter).catch(() => logout());
