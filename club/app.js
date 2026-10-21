@@ -433,6 +433,7 @@ function validateP3() {
   if ($('rName').value.trim().length < 2) msg = 'Escribí tu nombre';
   else if (!emailOk($('rEmail').value)) msg = 'Poné un email válido';
   else if ($('rPhone').value.trim().length < 6) msg = 'Dejanos un WhatsApp para avisarte si el club gana';
+  else if ($('rIsClient').checked && !$('rOrder').value.trim()) msg = 'Escribí tu número de pedido';
   else if (!followsOk()) msg = 'Seguí a las dos marcas para continuar';
   else if (!$('rConsent').checked) msg = 'Confirmá que tenés el aval del club';
   $('p3Send').disabled = !!msg;
@@ -440,6 +441,12 @@ function validateP3() {
   $('ph3').textContent = msg || '¡Todo listo!';
   return !msg;
 }
+$('rIsClient').addEventListener('change', () => {
+  const on = $('rIsClient').checked;
+  $('rClientFields').classList.toggle('hidden', !on);
+  $('rClientBox').classList.toggle('on', on);
+  if (on) $('rOrder').focus();
+});
 $('p3').addEventListener('input', validateP3);
 $('p3').addEventListener('change', validateP3);
 $('p3').addEventListener('submit', async (e) => {
@@ -464,14 +471,34 @@ $('p3').addEventListener('submit', async (e) => {
     btn.disabled = false;
     return;
   }
-  const t = data.team;
+  let t = data.team;
+  let clientMsg = '';
+  let clientOk = false;
+  if ($('rIsClient').checked && !data.existing) {
+    const r = await sb.rpc('club_support_team_client', {
+      p_code: t.code, p_order: $('rOrder').value.trim(), p_contact: '',
+      p_name: $('rName').value.trim(), p_email: $('rEmail').value.trim(), p_city: $('tCity').value.trim(), p_channels: { gmail: true, whatsapp: true },
+    });
+    const st = r.data?.status;
+    if (!r.error && (st === 'new_client' || st === 'upgraded' || st === 'existing')) { clientOk = true; t = r.data.team; }
+    else clientMsg = {
+      invalid: 'El club quedó postulado, pero no encontramos ese número de pedido. Revisalo en tu comprobante y sumalo desde "Apoyar a un club".',
+      used: 'El club quedó postulado, pero ese número de pedido ya se usó.',
+      limit: 'El club quedó postulado. Hubo demasiados intentos con el pedido: probá en una hora desde "Apoyar a un club".',
+    }[st] || 'El club quedó postulado, pero no pudimos validar el pedido. Probá desde "Apoyar a un club".';
+  } else if ($('rIsClient').checked && data.existing) {
+    clientMsg = 'Para sumar tu pedido a este club, apoyalo desde "Apoyar a un club" marcando "Soy cliente".';
+  }
+  $('p4Client').textContent = clientMsg;
+  $('p4Client').classList.toggle('hidden', !clientMsg);
   state.me = { code: t.code, role: 'rep' };
   LS.set('club_me', state.me);
   paintSock($('doneSock'), t.color1, t.color2);
   $('p4Title').textContent = data.existing ? `${t.name} ya estaba postulado` : `¡${t.name} ya está en carrera!`;
   $('p4Text').textContent = data.existing
     ? 'Alguien ya lo había postulado. Lo importante ahora es sumar gente: compartí el link.'
-    : 'Ahora lo que más ayuda es que el barrio se sume: cada hincha es una chance más.';
+    : (clientOk ? `¡Gracias, cliente! Tu apoyo vale x3: ${t.name} arranca con ${t.chances} chances. Ahora sumá al barrio.`
+      : 'Ahora lo que más ayuda es que el barrio se sume: cada hincha es una chance más.');
   setShare('p4', t, 'Postulé a');
   postStep(4);
   loadTeams();

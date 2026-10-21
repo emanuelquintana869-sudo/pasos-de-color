@@ -402,6 +402,13 @@
         <div class="field"><label for="rEmail">Email</label><input id="rEmail" type="email" maxlength="120" autocomplete="email" inputmode="email" required></div>
         <div class="field"><label for="rPhone">WhatsApp</label><input id="rPhone" type="tel" maxlength="30" autocomplete="tel" inputmode="tel" placeholder="11 1234 5678" required></div>
       </div>
+      <div class="client-box" id="rClientBox">
+        <label class="client-toggle"><input type="checkbox" id="rIsClient"> <span><strong>¿Sos cliente de Good is Good?</strong><small>Poné tu número de pedido y tu apoyo al club vale <b>x3</b>.</small></span></label>
+        <div id="rClientFields" class="hidden">
+          <div class="field"><label for="rOrder">Número de pedido</label><input id="rOrder" type="text" inputmode="numeric" maxlength="40" autocomplete="off" placeholder="Ej: 12"></div>
+          <p class="client-note">Usamos el número de pedido solo para confirmar que sos cliente. Cada pedido se puede usar una sola vez.</p>
+        </div>
+      </div>
       <span style="font-weight:700;font-size:14px">Seguí a las marcas</span>
       <div class="follow-row" id="follow3"></div>
       <label class="consent"><input type="checkbox" id="rConsent"> Soy parte del club y tengo su aval para postularlo. Acepto que me contacten y que la historia se publique en esta página.</label>
@@ -416,6 +423,7 @@
       <div class="done-sock" aria-hidden="true"><div class="sock p-team" id="doneSock"><div class="leg"></div><div class="foot"></div><div class="cuff"></div></div></div>
       <h3 id="p4Title">¡Tu club ya está en carrera!</h3>
       <p class="lead" id="p4Text" style="margin:0">Ahora sumá a tu gente: cada hincha es una chance más.</p>
+      <p class="hint err hidden" id="p4Client" style="margin:8px 0 0"></p>
       <div class="share">
         <strong>Link para apoyar a tu club:</strong>
         <code id="p4Link"></code>
