@@ -14,22 +14,26 @@ Landing para que clientes y seguidores participen y ganen medias de la fábrica 
 - **Últimos ganadores** con su club y **videos** de la fábrica (YouTube se ve dentro de la página).
 - **Panel de admin** en `/admin`: crear rondas, arrancar el vivo, elegir ganador (al azar y ponderado por chances, del lado del servidor), ver contacto del ganador, mandar avisos, exportar participantes a CSV y cargar videos.
 
-## Estructura
+## Estructura del repo
+
+Dos sitios **totalmente separados**, cada uno en su carpeta y con su propio proyecto de Vercel:
 
 ```
-index.html  styles.css  app.js     → sitio público
-admin.html  admin.js               → panel de rondas
-sw.js  manifest.webmanifest        → notificaciones push / app instalable
-config.js                          → URL y clave pública de Supabase, redes
-supabase/migrations/0001_init.sql  → tablas, reglas de seguridad y funciones
-supabase/functions/notify/         → función que envía push y mails
+sitio-principal/   → Pasos de Color (pasos-de-color.vercel.app)
+  index.html  styles.css  app.js     → sitio público
+  admin.html  admin.js               → panel de rondas
+  sw.js  manifest.webmanifest        → notificaciones push / app instalable
+  config.js                          → URL y clave pública de Supabase, redes
+  supabase/migrations/0001_init.sql  → tablas, reglas de seguridad y funciones
+  supabase/functions/notify/         → función que envía push y mails
+club/              → Club Pasos de Color (club-pasos-de-color.vercel.app)
 ```
 
 Es un sitio estático: no necesita compilación. Se publica tal cual en Vercel.
 
 ## Configuración
 
-1. **Redes**: editá los links en `config.js`.
+1. **Redes**: editá los links en `sitio-principal/config.js`.
 2. **Contraseña del panel**: se guarda encriptada en `private.admin`. Para cambiarla, en el editor SQL de Supabase:
    ```sql
    update private.admin set pass_hash = extensions.crypt('NUEVA-CONTRASEÑA', extensions.gen_salt('bf'));
@@ -53,7 +57,7 @@ Es un sitio estático: no necesita compilación. Se publica tal cual en Vercel.
 
 ## Publicación
 
-El proyecto de Vercel `pasos-de-color` está conectado a este repo: cada push a `main` se publica solo.
+El proyecto de Vercel `pasos-de-color` publica la carpeta `sitio-principal/` y `club-pasos-de-color` publica `club/`.
 
 ## Club Pasos de Color (carpeta `club/`)
 
