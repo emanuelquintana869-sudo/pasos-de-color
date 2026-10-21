@@ -44,6 +44,7 @@
   .contact { background: #FFF3B0; border-radius: 14px; padding: 12px 14px; margin-top: 10px; width: 100%; font-size: 15px; line-height: 1.6; }
   .contact a { color: var(--violet-2); }
   .ghost-dark { color: var(--violet-2); }
+  #notifyForm .field, #ordersPanel .field { flex: none; }
 </style>
 </head>
 <body>
@@ -103,6 +104,31 @@
         <button class="cta" type="submit" style="align-self:flex-start">Enviar aviso</button>
       </form>
       <div class="log hidden" id="notifyLog"></div>
+    </section>
+
+    <section class="panel" id="ordersPanel">
+      <h2>Pedidos de clientes</h2>
+      <p>Subí el archivo <strong>.json</strong> de tu sistema. Se lee acá, en tu navegador: <strong>solo se sube el número de pedido y el mail o teléfono de cada compra</strong>, y se guardan encriptados. Nombres, montos, direcciones y el resto del archivo no salen de tu compu. Podés subir el archivo completo cada vez: los pedidos repetidos se actualizan y los ya usados siguen usados.</p>
+      <div class="stats" style="margin-bottom:14px">
+        <div class="stat" style="background:#EFE8FF"><b id="oTotal">0</b><span>Pedidos cargados</span></div>
+        <div class="stat" style="background:#FFF3B0"><b id="oUsed">0</b><span>Usados por clientes</span></div>
+        <div class="stat" style="background:#F4EEFF"><b id="oLast" style="font-size:22px;line-height:1.3">—</b><span>Última carga</span></div>
+      </div>
+      <div class="field" style="margin:0 0 12px"><label for="oFile">Archivo de pedidos (.json)</label><input id="oFile" type="file" accept=".json,application/json" style="height:auto;padding:12px"></div>
+      <div id="oMap" class="hidden">
+        <p id="oFound" style="margin:0 0 10px"></p>
+        <div class="grid2">
+          <div class="field" style="margin:0"><label for="oOrder">Campo con el número de pedido</label><select id="oOrder"></select></div>
+          <div class="field" style="margin:0"><label for="oEmail">Campo con el mail (opcional)</label><select id="oEmail"></select></div>
+          <div class="field" style="margin:0"><label for="oPhone">Campo con el teléfono (opcional)</label><select id="oPhone"></select></div>
+        </div>
+        <p style="margin:14px 0 6px;font-weight:700;color:var(--ink)">Así se va a subir (vista previa, con datos tapados):</p>
+        <div class="scroll" style="max-height:220px"><table><thead><tr><th>Pedido</th><th>Mail</th><th>Teléfono (últimos 4)</th></tr></thead><tbody id="oPreview"></tbody></table></div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px">
+          <button type="button" class="cta" id="oUpload">Subir pedidos</button>
+          <span id="oMsg" style="font-weight:700"></span>
+        </div>
+      </div>
     </section>
 
     <section class="panel">

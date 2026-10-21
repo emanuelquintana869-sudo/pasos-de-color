@@ -299,6 +299,7 @@
         <details><summary>¿Tiene algún costo?<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>No. Postular y apoyar es gratis, y no hace falta comprar nada.</p></details>
         <details><summary>¿Qué gana el club?<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>Medias personalizadas con los colores del club. El premio exacto de cada ronda lo anunciamos en esta página antes de que se juegue.</p></details>
         <details><summary>¿Cómo se elige al club ganador?<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>El sistema elige al azar entre los clubes postulados, en vivo y a la vista de todos. Cada hincha que apoya a un club le suma una chance: el que tiene más gente detrás tiene más chances, pero cualquier club puede ganar.</p></details>
+        <details><summary>Soy cliente de Good is Good, ¿tengo algún beneficio?<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>Sí: al apoyar a un club, marcá "Soy cliente" y poné tu número de pedido junto con el mail o los últimos 4 números del teléfono de esa compra. Tu apoyo vale x3 para el club. Cada pedido se puede usar una sola vez.</p></details>
         <details><summary>¿Puedo apoyar a más de un club?<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>No: cada persona apoya a un solo club, con su mail. Así el ranking es justo para todos.</p></details>
         <details><summary>¿Cómo se entera el club si gana?<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>Lo ve en pantalla en la ronda en vivo y le escribimos a la persona que lo postuló, por mail y WhatsApp, para coordinar los colores y el envío.</p></details>
       </div>
@@ -449,6 +450,16 @@
         <div class="field"><label for="fCity">Tu ciudad</label><input id="fCity" type="text" maxlength="80" autocomplete="address-level2"></div>
       </div>
       <div class="field"><label for="fEmail">Email</label><input id="fEmail" type="email" maxlength="120" autocomplete="email" inputmode="email" required></div>
+      <div class="client-box" id="clientBox">
+        <label class="client-toggle"><input type="checkbox" id="isClient"> <span><strong>Soy cliente de Good is Good</strong><small>Con tu número de pedido, tu apoyo vale <b>x3</b> para el club.</small></span></label>
+        <div id="clientFields" class="hidden">
+          <div class="row">
+            <div class="field"><label for="fOrder">Número de pedido</label><input id="fOrder" type="text" maxlength="40" autocomplete="off" autocapitalize="characters" placeholder="Ej: 10234"></div>
+            <div class="field"><label for="fContact">Mail o teléfono de la compra</label><input id="fContact" type="text" maxlength="120" autocomplete="off" placeholder="El mail o los últimos 4 números"></div>
+          </div>
+          <p class="client-note">Usamos el número de pedido solo para confirmar que sos cliente. Cada pedido se puede usar una sola vez.</p>
+        </div>
+      </div>
       <span style="font-weight:700;font-size:14px">Seguí a las marcas</span>
       <div class="follow-row" id="follow1"></div>
       <label class="consent"><input type="checkbox" id="fConsent"> Acepto que me avisen de las rondas. Apoyo a un solo club.</label>

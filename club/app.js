@@ -162,7 +162,7 @@ function filteredTeams() {
 
 function renderRank() {
   const list = filteredTeams();
-  const max = Math.max(1, ...state.teams.map((t) => t.supporters));
+  const max = Math.max(1, ...state.teams.map((t) => t.chances ?? t.supporters));
   if (!state.teams.length) {
     $('rankList').innerHTML = `<div class="empty-box"><h3>El ranking está esperando a su primer club</h3><p>¿Tu club de barrio se merece medias nuevas? Postulalo y que el barrio empiece a empujar.</p><button type="button" class="cta" data-postular>Postular a mi club</button></div>`;
     $('moreBtn').classList.add('hidden');
@@ -177,7 +177,7 @@ function renderRank() {
   const hasDemo = list.some((t) => t.demo);
   $('rankList').innerHTML = list.slice(0, state.shown).map((t) => {
     const pos = rankOf.get(t.code);
-    const pct = Math.max(4, Math.round((t.supporters / max) * 100));
+    const pct = Math.max(4, Math.round(((t.chances ?? t.supporters) / max) * 100));
     const mine = state.me?.code === t.code;
     return `<article class="team-row ${!t.demo && pos <= 3 ? `top${pos}` : ''} ${t.demo ? 'demo' : ''}" style="${mine ? 'outline:3px solid var(--mint);outline-offset:2px' : ''}">
       <span class="pos" ${t.demo ? 'aria-hidden="true"' : `aria-label="Puesto ${pos}"`}>${t.demo ? '·' : pos}</span>
@@ -189,7 +189,8 @@ function renderRank() {
         ${t.story ? `<button type="button" class="story-btn" data-story="${t.code}" aria-expanded="false">Leer su historia</button>` : ''}
       </div>
       <div class="team-side">
-        <span class="count">${t.supporters} ${t.supporters === 1 ? 'hincha' : 'hinchas'}</span>
+        <span class="count">${t.supporters} ${t.supporters === 1 ? 'hincha' : 'hinchas'}${t.clients ? ` · <span class="client-count">${t.clients} ${t.clients === 1 ? 'cliente' : 'clientes'}</span>` : ''}</span>
+        ${!t.demo && t.chances !== t.supporters ? `<span class="chances">${t.chances} chances</span>` : ''}
         ${t.demo ? '<span class="demo-note">No participa</span>' : `<button type="button" class="cta" data-apoyar="${t.code}">${mine ? 'Compartir' : 'Apoyar'}</button>`}
       </div>
       ${t.story ? `<p class="team-story hidden" id="story-${t.code}">“${esc(t.story)}”</p>` : ''}
@@ -515,7 +516,7 @@ async function selectTeam(code) {
   if (!t) { const { data } = await sb.rpc('club_team_status', { p_code: code }); t = data; }
   if (!t) { toast('No encontramos ese club'); supStep(0); renderPicker(); return; }
   state.supTeam = t;
-  $('supHead').innerHTML = `${badge(t, 'lg')}<div><strong>${esc(t.name)}</strong><span>${esc([t.sport, where(t)].filter(Boolean).join(' · '))}</span><br><span><b>${t.supporters}</b> ${t.supporters === 1 ? 'hincha' : 'hinchas'} lo apoyan</span></div>`;
+  $('supHead').innerHTML = `${badge(t, 'lg')}<div><strong>${esc(t.name)}</strong><span>${esc([t.sport, where(t)].filter(Boolean).join(' · '))}</span><br><span><b>${t.supporters}</b> ${t.supporters === 1 ? 'hincha' : 'hinchas'} lo apoyan${t.clients ? ` · ${t.clients} ${t.clients === 1 ? 'cliente' : 'clientes'}` : ''}</span></div>`;
   $('supStory').textContent = t.story ? `“${t.story}”` : '';
   supStep(1);
   validateSup();
@@ -524,6 +525,8 @@ function validateSup() {
   let msg = '';
   if ($('fName').value.trim().length < 2) msg = 'Escribí tu nombre';
   else if (!emailOk($('fEmail').value)) msg = 'Poné un email válido';
+  else if ($('isClient').checked && $('fOrder').value.trim().length < 2) msg = 'Escribí tu número de pedido';
+  else if ($('isClient').checked && !emailOk($('fContact').value) && $('fContact').value.replace(/\D/g, '').length < 4) msg = 'Poné el mail o los últimos 4 números del teléfono de la compra';
   else if (!followsOk()) msg = 'Seguí a las dos marcas para continuar';
   else if (!$('fConsent').checked) msg = 'Aceptá para continuar';
   $('supSend').disabled = !!msg;
@@ -531,6 +534,12 @@ function validateSup() {
   $('sh1').textContent = msg || '¡Listo para sumar!';
   return !msg;
 }
+$('isClient').addEventListener('change', () => {
+  $('clientFields').classList.toggle('hidden', !$('isClient').checked);
+  $('clientBox').classList.toggle('on', $('isClient').checked);
+  $('supSend').textContent = $('isClient').checked ? 'Apoyar como cliente' : 'Apoyar al club';
+  if ($('isClient').checked) $('fOrder').focus();
+});
 $('s1').addEventListener('input', validateSup);
 $('s1').addEventListener('change', validateSup);
 $('s1').addEventListener('submit', async (e) => {
@@ -539,11 +548,29 @@ $('s1').addEventListener('submit', async (e) => {
   const btn = $('supSend');
   btn.disabled = true;
   btn.textContent = 'Sumándote…';
-  const { data, error } = await sb.rpc('club_support_team', {
-    p_code: state.supTeam.code, p_name: $('fName').value.trim(), p_email: $('fEmail').value.trim(),
-    p_city: $('fCity').value.trim(), p_instagram: null, p_channels: { gmail: true },
-  });
-  btn.textContent = 'Apoyar al club';
+  const asClient = $('isClient').checked;
+  const { data, error } = asClient
+    ? await sb.rpc('club_support_team_client', {
+      p_code: state.supTeam.code, p_order: $('fOrder').value.trim(), p_contact: $('fContact').value.trim(),
+      p_name: $('fName').value.trim(), p_email: $('fEmail').value.trim(), p_city: $('fCity').value.trim(), p_channels: { gmail: true },
+    })
+    : await sb.rpc('club_support_team', {
+      p_code: state.supTeam.code, p_name: $('fName').value.trim(), p_email: $('fEmail').value.trim(),
+      p_city: $('fCity').value.trim(), p_instagram: null, p_channels: { gmail: true },
+    });
+  btn.textContent = asClient ? 'Apoyar como cliente' : 'Apoyar al club';
+  const clientErr = {
+    invalid: 'No encontramos ese pedido con ese mail o teléfono. Revisá los datos de tu compra.',
+    used: 'Ese número de pedido ya se usó para apoyar a un club.',
+    limit: 'Hubo demasiados intentos. Probá de nuevo en una hora, o apoyá sin número de pedido.',
+    no_team: 'Ese club ya no está disponible.',
+  };
+  if (!error && clientErr[data?.status]) {
+    $('sh1').textContent = clientErr[data.status];
+    $('sh1').classList.add('err');
+    btn.disabled = false;
+    return;
+  }
   if (error) {
     console.error(error);
     $('sh1').textContent = 'No pudimos sumarte. Intentá de nuevo.';
@@ -561,6 +588,9 @@ $('s1').addEventListener('submit', async (e) => {
   } else if (data.status === 'existing') {
     $('s2Title').textContent = `Ya estabas en la hinchada de ${t.name}`;
     $('s2Text').textContent = `Lleva ${t.supporters} ${t.supporters === 1 ? 'hincha' : 'hinchas'}. Lo que más ayuda ahora es sumar a más gente del barrio.`;
+  } else if (data.status === 'new_client' || data.status === 'upgraded') {
+    $('s2Title').textContent = '¡Gracias, cliente! Tu apoyo vale x3';
+    $('s2Text').textContent = `${data.status === 'upgraded' ? 'Ya apoyabas al club y ahora tu apoyo cuenta triple. ' : ''}${t.name} suma ${t.chances} chances para la próxima ronda.`;
   } else {
     $('s2Title').textContent = '¡Ya sos parte de la hinchada!';
     $('s2Text').textContent = `${t.name} ahora tiene ${t.supporters} ${t.supporters === 1 ? 'hincha' : 'hinchas'}. Gracias por empujar.`;

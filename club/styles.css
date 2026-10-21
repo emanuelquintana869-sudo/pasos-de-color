@@ -464,3 +464,15 @@ input { font-family: inherit; }
 .demo-note { font-size: 13px; font-weight: 700; color: var(--muted); border: 1.5px dashed #B9AED6; border-radius: 999px; padding: 8px 12px; white-space: nowrap; }
 .demo-explain { margin: 8px 0 0; color: var(--soft); font-size: 14px; text-align: center; }
 .dot-club.demo { background: #F7F4FC; border: 1.5px dashed #B9AED6; color: var(--muted); }
+
+/* Clientes */
+.client-box { border: 2px dashed #D9CEF2; border-radius: 18px; padding: 12px 14px; margin-bottom: 12px; transition: border-color .2s, background .2s; }
+.client-box.on { border-style: solid; border-color: var(--yellow); background: #FFFBEA; }
+.client-toggle { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+.client-toggle input { width: 22px; height: 22px; accent-color: var(--violet-2); margin-top: 2px; flex: 0 0 auto; }
+.client-toggle strong { display: block; font-size: 16px; }
+.client-toggle small { display: block; color: var(--muted); font-size: 14px; }
+#clientFields { margin-top: 12px; }
+.client-note { margin: 0; font-size: 13px; color: var(--muted); }
+.client-count { color: #8A6A00; }
+.team-side .chances { font-size: 12px; font-weight: 800; color: var(--violet-2); background: #EFE8FF; padding: 3px 8px; border-radius: 999px; }

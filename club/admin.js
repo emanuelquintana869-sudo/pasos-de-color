@@ -39,7 +39,7 @@ async function enter() {
   $('loginPanel').classList.add('hidden');
   $('app').classList.remove('hidden');
   $('logout').classList.remove('hidden');
-  await Promise.all([loadRounds(), loadParticipants()]);
+  await Promise.all([loadRounds(), loadParticipants(), loadOrdersStats()]);
   sb.channel('club-admin-rondas').on('postgres_changes', { event: '*', schema: 'public', table: 'club_rounds' }, loadRounds).subscribe();
 }
 
@@ -211,6 +211,107 @@ $('csv').addEventListener('click', () => downloadCsv(teams,
 $('csvFans').addEventListener('click', async () => {
   try { const fans = await rpc('club_admin_list_supporters'); downloadCsv(fans, ['created_at', 'team_code', 'team_name', 'name', 'email', 'city'], 'hinchas-club-pasos-de-color'); }
   catch (err) { toast(err.message); }
+});
+
+// ---------- Pedidos de clientes ----------
+let orderRows = [];
+async function loadOrdersStats() {
+  try {
+    const st = await rpc('club_admin_orders_stats');
+    $('oTotal').textContent = Number(st.total).toLocaleString('es-AR');
+    $('oUsed').textContent = Number(st.used).toLocaleString('es-AR');
+    $('oLast').textContent = st.last_upload ? new Date(st.last_upload).toLocaleString('es-AR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', timeZone: TZ }) : '—';
+  } catch (err) { toast(err.message); }
+}
+function flatten(obj, prefix = '', out = {}) {
+  if (obj && typeof obj === 'object' && !Array.isArray(obj)) {
+    for (const [k, v] of Object.entries(obj)) {
+      const key = prefix ? `${prefix}.${k}` : k;
+      if (v && typeof v === 'object' && !Array.isArray(v) && prefix.split('.').length < 3) flatten(v, key, out);
+      else if (!Array.isArray(v)) out[key] = v;
+    }
+  }
+  return out;
+}
+function findRecords(data) {
+  if (Array.isArray(data)) return data.filter((x) => x && typeof x === 'object');
+  if (data && typeof data === 'object') {
+    for (const v of Object.values(data)) {
+      if (Array.isArray(v) && v.some((x) => x && typeof x === 'object')) return v.filter((x) => x && typeof x === 'object');
+    }
+    for (const v of Object.values(data)) {
+      if (v && typeof v === 'object' && !Array.isArray(v)) { const r = findRecords(v); if (r.length) return r; }
+    }
+    const vals = Object.entries(data);
+    if (vals.length && vals.every(([, v]) => v && typeof v === 'object' && !Array.isArray(v))) return vals.map(([k, v]) => ({ _clave: k, ...v }));
+  }
+  return [];
+}
+function guess(keys, words) {
+  const n = (k) => k.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  for (const w of words) { const k = keys.find((x) => n(x).split('.').pop().includes(w)); if (k) return k; }
+  return '';
+}
+const mask = (v, keep = 3) => { const s = String(v ?? ''); return s.length <= keep ? s : s.slice(0, keep) + '•'.repeat(Math.min(6, s.length - keep)); };
+const maskMail = (v) => { const s = String(v ?? ''); const [u, d] = s.split('@'); return d ? `${u.slice(0, 2)}•••@${d}` : (s ? '(no es un mail)' : ''); };
+function buildRows() {
+  const fo = $('oOrder').value; const fe = $('oEmail').value; const fp = $('oPhone').value;
+  return orderRows.map((r) => ({ o: r[fo], e: fe ? r[fe] : null, p: fp ? r[fp] : null }))
+    .map((x) => ({ o: x.o == null ? '' : String(x.o).trim(), e: x.e ? String(x.e).trim() : null, p: x.p ? String(x.p) : null }))
+    .filter((x) => x.o && ((x.e && x.e.includes('@')) || (x.p && x.p.replace(/\D/g, '').length >= 4)));
+}
+function previewOrders() {
+  const rows = buildRows();
+  $('oPreview').innerHTML = rows.slice(0, 5).map((x) => `<tr><td>${esc(mask(x.o))}</td><td>${esc(maskMail(x.e))}</td><td>${x.p ? '••••' + esc(x.p.replace(/\D/g, '').slice(-4)) : ''}</td></tr>`).join('')
+    || '<tr><td colspan="3">Elegí el campo del pedido y al menos el mail o el teléfono.</td></tr>';
+  const lost = orderRows.length - rows.length;
+  $('oUpload').textContent = `Subir ${rows.length.toLocaleString('es-AR')} pedidos`;
+  $('oUpload').disabled = !rows.length || !$('oOrder').value;
+  $('oMsg').textContent = lost > 0 ? `${lost} ${lost === 1 ? 'pedido sin mail ni teléfono válido no se va' : 'pedidos sin mail ni teléfono válido no se van'} a subir.` : '';
+  $('oMsg').style.color = 'var(--muted)';
+}
+$('oFile').addEventListener('change', async () => {
+  const f = $('oFile').files[0];
+  if (!f) return;
+  try {
+    const data = JSON.parse(await f.text());
+    orderRows = findRecords(data).map((r) => flatten(r));
+    if (!orderRows.length) { toast('No encontré una lista de pedidos en ese archivo', 6000); $('oMap').classList.add('hidden'); return; }
+    const keys = [...new Set(orderRows.slice(0, 50).flatMap((r) => Object.keys(r)))];
+    const opts = (sel) => '<option value="">— ninguno —</option>' + keys.map((k) => `<option ${k === sel ? 'selected' : ''}>${esc(k)}</option>`).join('');
+    $('oOrder').innerHTML = opts(guess(keys, ['pedido', 'order', 'nro', 'numero', 'num', 'orden', 'venta', 'factura', 'comprobante', 'id', '_clave']));
+    $('oEmail').innerHTML = opts(guess(keys, ['email', 'mail', 'correo']));
+    $('oPhone').innerHTML = opts(guess(keys, ['telefono', 'tel', 'phone', 'celular', 'cel', 'whatsapp', 'movil']));
+    $('oFound').textContent = `Encontré ${orderRows.length.toLocaleString('es-AR')} pedidos en "${f.name}". Revisá que los campos estén bien elegidos:`;
+    $('oMap').classList.remove('hidden');
+    previewOrders();
+  } catch (err) {
+    console.error(err);
+    toast('Ese archivo no es un JSON válido', 6000);
+  }
+});
+['oOrder', 'oEmail', 'oPhone'].forEach((id) => $(id).addEventListener('change', previewOrders));
+$('oUpload').addEventListener('click', async () => {
+  const rows = buildRows();
+  if (!rows.length) return;
+  const btn = $('oUpload'); btn.disabled = true;
+  let ins = 0, upd = 0, skip = 0;
+  try {
+    for (let i = 0; i < rows.length; i += 1000) {
+      $('oMsg').style.color = 'var(--ink)';
+      $('oMsg').textContent = `Subiendo ${Math.min(i + 1000, rows.length).toLocaleString('es-AR')} de ${rows.length.toLocaleString('es-AR')}…`;
+      const r = await rpc('club_admin_import_orders', { p_rows: rows.slice(i, i + 1000) });
+      ins += r.inserted; upd += r.updated; skip += r.skipped;
+    }
+    $('oMsg').style.color = '#0E8F4E';
+    $('oMsg').textContent = `Listo: ${ins} nuevos, ${upd} actualizados${skip ? `, ${skip} salteados` : ''}.`;
+    $('oFile').value = '';
+    orderRows = [];
+    loadOrdersStats();
+  } catch (err) {
+    $('oMsg').style.color = '#C0134A';
+    $('oMsg').textContent = `Error: ${err.message}`;
+  } finally { btn.disabled = false; }
 });
 
 if (PASS) rpc('club_admin_login').then(enter).catch(() => logout());
